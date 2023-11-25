@@ -11,7 +11,7 @@ Une fois l'installation terminée, assurez-vous que celui-ci est bien installé 
 
 <h2>Cloner le projet depuis le dépôt :</h2>
 
-Cloner le projet. Utilisez l'url SSH : `git clone git@github.com:NicoEPITA/project_archi.git`
+Cloner le projet. Utilisez l'url SSH : `git clone git@github.com:jiji20100/HarmoniHub.git`
 Si vous rencontrez des soucis de clonage, vérifiez vos droits avec chown et modifiez les si necessaire avec chmod. Vous pouvez aussi simplement tout faire en `sudo su`.
 
 <h2>Installer les dépendances Laravel :</h2>
