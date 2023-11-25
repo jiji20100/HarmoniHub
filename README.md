@@ -33,3 +33,6 @@ Ouvrez votre navigateur et accédez à l'url de votre machine (ou à l'URL que v
 
 Ces étapes devraient vous permettre de faire tourner votre projet Laravel. Assurez-vous de suivre la documentation officielle de Laravel pour plus d'informations sur le développement et le déploiement d'applications Laravel : <a href="https://laravel.com/docs/10.x">Documentation Laravel.</a>
 
+<h1>Gestion des erreurs</h1>
+
+Vous risquez de rencontrer des erreurs de permissions. Si c'est le cas, à vous de vérifier vos droits sur le projet. Si laravel a besoin d'accéder à un dossier en particulier mais qu'il en a pas les permissions, n'hésiter pas à le passer en chmod 777.
