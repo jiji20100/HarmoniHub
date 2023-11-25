@@ -18,14 +18,14 @@ Si vous rencontrez des soucis de clonage, vérifiez vos droits avec chown et mod
 
 Dans le répertoire racine de votre projet Laravel, ouvrez une invite de commande et exécutez la commande suivante pour installer les dépendances du projet à l'aide de Composer : `composer install`
 
-<h2> Migrer la base de donnée :</h2>
-
-Ajouter votre dossier phpmyadmin utilisé en cours dans le dossier public/ et éxécutez les migrations pour créer les tables de base de données associées à votre application : `php artisan migrate`
-
 <h2>Configurer l'environnement :</h2>
 
 Dupliquez le fichier .env.example et renommez le en .env. Mettre à jour chaque variable en fonction de votre appli.
 Exécutez la commande suivante pour générer une clé d'application unique pour votre projet Laravel : `php artisan key:generate`
+
+<h2> Migrer la base de donnée :</h2>
+
+Ajouter votre dossier phpmyadmin utilisé en cours dans le dossier public/ et éxécutez les migrations pour créer les tables de base de données associées à votre application : `php artisan migrate`
 
 <h2>Testez votre application :</h2>
 
