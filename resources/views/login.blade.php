@@ -1,4 +1,0 @@
-<div>
-    Hello, world!
-</div>
-
