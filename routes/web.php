@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Mp3Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +45,9 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 
 // Réinitialiser le mot de passe
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+Route::get('/upload', [Mp3Controller::class, 'showUploadForm'])->name('upload.form');
+Route::post('/upload', [Mp3Controller::class, 'upload'])->name('upload');
+
+
+

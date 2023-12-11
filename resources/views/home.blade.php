@@ -3,44 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil</title>
+    <title>Votre Site de Streaming</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding: 50px;
-        }
-
+        
         .welcome-message {
-            margin-bottom: 20px;
-            color: #3498db;
-            font-size: 24px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            border: 2px solid #4CAF50; /* Bordure colorée pour l'encadrement */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile pour le relief */
+            background-color: white; /* Fond blanc pour ressortir sur le reste de la page */
+            max-width: 600px; /* Largeur maximale pour la lisibilité */
+            border-radius: 15px; /* Bordures arrondies pour un look doux */
         }
 
-        .logout-button {
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
+        .welcome-message h2 {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 24px; /* Taille de la police pour le titre */
         }
 
-        .logout-button:hover {
-            background-color: #2874a6;
+        .welcome-message p {
+            color: #555;
+            font-size: 18px; /* Taille de la police pour le texte */
         }
     </style>
 </head>
+@extends('layouts.app')
+
+@section('content')
 <body>
+    <!-- Contenu Principal -->
     <div class="welcome-message">
-        Bienvenue, {{ Auth::user()->name }} !
+        <h2>Bienvenue sur Notre Site de Streaming en ligne!</h2>
+        <p>Profitez d'une expérience incroyable avec notre vaste collection de musiques. <br><br> Sur celui-ci, vous avez la possibilité d'ajouter vos propres sons et de les écouter. Vous pouvez aussi écouter ceux des autres en les recherchant dans la barre de recherche.</p>
     </div>
 
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="logout-button">Déconnexion</button>
-    </form>
 </body>
 </html>
+
+@endsection
+
+    
