@@ -66,15 +66,6 @@
         }
     </style>
 </head>
-<?php
-// Vérifie si l'utilisateur est déjà connecté pour le rediriger
-session_start(); 
-
-if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
-    header('Location: home.php');
-    exit;
-}
-?>
 <body>
     <div class="container">
         <h2>Connexion</h2>

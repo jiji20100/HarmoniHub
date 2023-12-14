@@ -10,9 +10,7 @@ class Renderer
     public function view() 
     {
         ob_start();
-
         require VIEWS . $this->viewsPath . ".php";
-
         return ob_get_clean();
     }
 
