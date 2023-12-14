@@ -1,0 +1,17 @@
+:root {
+    --primary: #3490dc;
+    --secondary: #ffed4a;
+    --danger: #e3342f;
+
+    --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-size-base: 1rem;
+}
+
+body {
+    font-family: var(--font);
+    font-size: var(--font-size-base);
+    margin: 0;
+    padding: 0;
+    background-color: #f8fafc;
+    text-align: center;
+}

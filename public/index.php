@@ -1,15 +1,43 @@
+<?php
+
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
+use Router\Router;
+
+require '../vendor/autoload.php';
+
+define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARATOR);
+define ('VIEWS', ROOT . "Views" . DIRECTORY_SEPARATOR);
+
+$router = new Router();
+
+$router->register('/', ['Controllers\HomeController', 'index']);
+
+
+//$router->get('/', "HomeController@index");
+
+
+//var_dump(explode('?', $_SERVER['REQUEST_URI']));
+
+try {
+    echo $router->resolve($_SERVER['REQUEST_URI']);
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+
+?>
+
+
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page de Connexion</title>
+    <title>App</title>
+    <link rel="stylesheet" href="resources/css/app.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding: 50px;
-        }
 
         .container {
             max-width: 400px;
@@ -39,8 +67,9 @@
         button.login {
             background-color: #3498db;
             color: #fff;
-	}
-	.container a {
+        }
+        
+        .container a {
             text-decoration: none;
     	}
     </style>

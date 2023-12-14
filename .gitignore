@@ -3,3 +3,5 @@
 /.fleet
 /.vscode
 /config/config.php
+
+/vendor/composer/*
