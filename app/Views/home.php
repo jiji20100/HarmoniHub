@@ -33,7 +33,7 @@
         }
     </style>
 </head>
-<?php include '../layout/navbar.php'; ?>
+<?php include '../app/Resources/layout/navbar.php'?>
 <body>
     <div class="welcome-message">
         <h2>Bienvenue sur Notre Site de Streaming en ligne!</h2>

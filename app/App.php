@@ -5,6 +5,7 @@ namespace Source;
 use Exceptions\RouteNotFoundException;
 use Router\Router;
 use Source\Renderer;
+use Source\Database;
 
 class App {
 
