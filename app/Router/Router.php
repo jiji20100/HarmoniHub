@@ -8,12 +8,12 @@ class Router {
 
     private array $routes = []; 
 
-    public function register(string $path, collable|array $action): void {
+    public function set(string $path, collable|array $action): void {
         $this->routes[$path] = $action;
     }
 
 
-    public function resolve(string $uri) {
+    public function get(string $uri) {
         $path = explode('?', $uri)[0];
         $action = $this->routes[$path] ?? null;
 
@@ -27,13 +27,9 @@ class Router {
             if (class_exists($controllerName) && method_exists($controllerName, $method)) {
                 $controller = new $controllerName();
                 return call_user_func_array([$controller, $method], []);
-                echo "here";
             }
-            echo "here";
         }
-        echo "here";
 
-        throw new RouteNotFoundException();
+        throw new RouteNotFoundException("No route found", 404);
     }
 }
-?>

@@ -69,7 +69,7 @@
 <body>
     <div class="container">
         <h2>Connexion</h2>
-        <form method="POST" action="../app/home.php">
+        <form method="POST" action="../app/home">
             <label for="email">E-Mail:</label>
             <input type="email" id="email" name="email" required>
 
@@ -79,10 +79,10 @@
             <button type="submit">Se connecter</button>
         </form>
         <br>
-        <a href="register.php">Je n'ai pas encore de compte</a>
+        <a href="register">Je n'ai pas encore de compte</a>
         <br>
         <br>
-        <a href="reset_password.php">J'ai oublié mon mot de passe</a>
+        <a href="reset_password">J'ai oublié mon mot de passe</a>
     </div>
 </body>
 </html>
