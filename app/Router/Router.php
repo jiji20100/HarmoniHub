@@ -1,21 +1,24 @@
 <?php
-
 namespace Router;
 
 use Exceptions\RouteNotFoundException;
 
 class Router {
 
-    private array $routes = []; 
+    private array $routes = [];
 
-    public function set(string $path, collable|array $action): void {
-        $this->routes[$path] = $action;
+    public function set(string $path, callable|array $action): void {
+        $this->routes['GET ' . $path] = $action;
     }
 
+    public function post(string $path, callable|array $action): void {
+        $this->routes['POST ' . $path] = $action;
+    }
 
-    public function get(string $uri) {
+    public function handleRequest(string $uri, string $requestType) {
         $path = explode('?', $uri)[0];
-        $action = $this->routes[$path] ?? null;
+        $fullPath = $requestType . ' ' . $path;
+        $action = $this->routes[$fullPath] ?? null;
 
         if (is_callable($action)) {
             return $action();
@@ -30,6 +33,8 @@ class Router {
             }
         }
 
-        throw new RouteNotFoundException("No route found", 404);
+        throw new RouteNotFoundException("No route found for $fullPath", 404);
     }
 }
+
+?>

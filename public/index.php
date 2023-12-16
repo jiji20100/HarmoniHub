@@ -12,9 +12,10 @@ define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR . "app" . DIRECTORY_SEPARA
 define ('VIEWS', ROOT . "Views" . DIRECTORY_SEPARATOR);
 
 $router = new Router();
-$app = new App($router, $_SERVER['REQUEST_URI']);
+$app = new App($router, $_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
 
 $app->initRoutes();
+
 ?>
 
 <html lang="en">

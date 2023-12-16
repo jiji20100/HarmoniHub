@@ -1,0 +1,8 @@
+[application]
+name = "Harmony Hub"
+
+[database]
+host = "localhost"
+name = "HarmoniHub"
+username = ""            #Remplir par le username de votre base de donnée
+password = ""            #Remplir par le mot de passe de votre base de donnée

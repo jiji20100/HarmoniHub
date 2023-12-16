@@ -42,9 +42,9 @@
 <body>
     <div class="container">
         <h2>Page de Connexion</h2>
-	    <a href="authentification/login"><button class="login">Se connecter</button></a>
-        <a href="authentification/register"><button class="signup">S'inscrire</button></a>
-	    <a href="authentification/reset_password">J'ai oublié mon mot de passe </a>
+	    <a href="/login"><button class="login">Se connecter</button></a>
+        <a href="/register"><button class="signup">S'inscrire</button></a>
+	    <a href="/reset_password">J'ai oublié mon mot de passe </a>
     </div>
 </body>
 </html>

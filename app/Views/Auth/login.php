@@ -2,87 +2,113 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 50px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+    }
 
-        h2 {
-            color: #3498db;
-            text-decoration: underline;
-        }
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
 
-        input {
-            width: 95%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
+    .form-group input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4caf50;
-            border: none;
-            border-radius: 4px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #0056b3;
+        color: white;
+        cursor: pointer;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    button:hover {
+        background-color: #004494;
+    }
 
-        .success-message {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            background-color: #ccffcc;
-            color: #006400;
-            text-align: center;
-            font-size: 16px;
-        }
-    </style>
+    .alert {
+        padding: 10px;
+        background-color: #f44336;
+        color: white;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    a {
+        color: #0056b3;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
 </head>
 <body>
+
     <div class="container">
+        <!-- Vérifier et afficher les messages d'erreur ou de succès stockés en session -->
+        <?php if(isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <?= $_SESSION['error']; ?>
+                <?php unset($_SESSION['error']); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if(isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <?= $_SESSION['success']; ?>
+                <?php unset($_SESSION['success']); ?>
+            </div>
+        <?php endif; ?>
+
         <h2>Connexion</h2>
-        <form method="POST" action="../app/home">
-            <label for="email">E-Mail:</label>
-            <input type="email" id="email" name="email" required>
+        
+        <!-- Formulaire de connexion -->
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="email">Nom d'utilisateur</label>
+                <input type="text" name="email" id="email" required>
+            </div>
 
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" id="password" required>
+            </div>
 
-            <button type="submit">Se connecter</button>
+            <button type="submit">Connexion</button>
         </form>
-        <br>
-        <a href="register">Je n'ai pas encore de compte</a>
-        <br>
-        <br>
-        <a href="reset_password">J'ai oublié mon mot de passe</a>
+
+        <!-- Liens vers d'autres pages comme l'inscription ou la réinitialisation du mot de passe -->
+        <p>Pas encore de compte ? <a href="/register">Inscrivez-vous</a></p>
+        <p><a href="/reset_password">Mot de passe oublié ?</a></p>
     </div>
+
 </body>
 </html>

@@ -1,4 +1,6 @@
 RewriteEngine on
 
+RewriteCond %{REQUEST_URI} !^/phpmyadmin(/|$)
+
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^ index.php [QSA,L]

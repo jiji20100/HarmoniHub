@@ -83,7 +83,7 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
             }
             ?>
         </div>
-        <form action="register_process.php" method="post">
+        <form action="/register" method="post">
             <label for="surname">Prenom:</label>
             <input type="text" id="surname" name="surname" required>
 
