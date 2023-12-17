@@ -141,5 +141,21 @@ class AuthController {
             // Gérer l'affichage des erreurs ici si nécessaire
         }
     }
+
+    public function logout()
+    {
+        $_SESSION = array(); // Efface les données de la session
+        
+        if (ini_get("session.use_cookies")) { // Supprime le cookie de session s'il existe
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy();
+        header("Location: /login");
+        exit;
+    }
 }
 ?>

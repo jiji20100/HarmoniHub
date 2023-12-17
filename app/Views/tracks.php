@@ -65,16 +65,21 @@
             require_once('../app/config/config.php');
             try {
                 // Sélectionnez les fichiers depuis la table musics en utilisant la connexion définie dans config.php
-                $sql = "SELECT * FROM musics";
-                $stmt = $connexion->query($sql);
+                $sql = "SELECT * FROM musics WHERE user_id = :user_id";
+                $stmt = $connexion->prepare($sql); // Utilisez prepare() au lieu de query()
+                $stmt->bindParam(":user_id", $_SESSION['user_id']); // Assurez-vous que le nom du paramètre correspond à celui dans la requête SQL
+                $stmt->execute(); // Exécutez la requête préparée
+
+                // Maintenant, vous pouvez récupérer les résultats
+                $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 // Affichez la liste des fichiers
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                foreach ($musics as $row) {
                     $title = str_replace('_', ' ', $row['title']);
                     echo '<div class="track">';
                     echo '<h3>' . $title . '</h3>';
-                    echo '<audio controls>';
-                    echo '<source src="/files/' . $row['title'] . '" type="audio/mpeg">';
+                    echo '<audio id ="' . $row['title'] . '" controls>';
+                    echo '<source src="' . $row['file_path'] . '" type="audio/mpeg">';
                     echo 'Votre navigateur ne supporte pas l\'élément audio.';
                     echo '</audio>';
                     echo '</div>';
@@ -94,7 +99,31 @@
                 unset($_SESSION['upload_message_type']);
             }
         ?>
-        <form action="/track" method="POST" enctype="multipart/form-data">    
+        <form action="/track" method="POST" enctype="multipart/form-data">
+            <label for="track_name">Nom :</label>
+            <input type="text" name="track_name" id="track_name" required>
+            <br>
+            <label for="genre">Genre :</label>
+            <select name="genre" id="genre">
+                <?php
+                    try {
+                        $sql = "SELECT * FROM genre";
+                        $stmt = $connexion->prepare($sql);
+                        $stmt->execute(); 
+                    
+                        $genres = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                        foreach ($genres as $row) {
+                            echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</option>';
+                        }
+                    } catch (PDOException $e) {
+                        echo 'Erreur de base de données : ' . $e->getMessage();
+                    }
+                ?>
+            </select>
+            <br>
+            <label for="featuring">featuring :</label>
+            <input type="text" name="featuring" id="featuring">
             <label for="mp3_file" style="cursor: pointer;">
                 <div id="drop-area">
                     <h3 style ="text-align: center">+</h3>                    
@@ -117,6 +146,8 @@
     const fileNameSpan = document.getElementById('file-name');
     const submitButton = document.getElementById('submit-button');
     const playButtons = document.querySelectorAll('.play-button');
+    var audios = document.querySelectorAll('audio');
+
 
     dropArea.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -126,8 +157,6 @@
     dropArea.addEventListener('dragleave', () => {
         dropArea.classList.remove('active');
     });
-
-    
     // Affichez les noms de tous les fichiers
 
     dropArea.addEventListener('drop', (e) => {
@@ -153,19 +182,20 @@
     });
 
 
-    // Parcourez tous les boutons de lecture et ajoutez un gestionnaire d'événement au clic
-    playButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            // Récupérez le chemin du fichier MP3 à partir de l'attribut data-src
-            const audioSrc = button.getAttribute('data-src');
-
-            // Créez un élément audio
-            const audio = new Audio(audioSrc);
-
-            // Jouez le fichier audio
-            audio.play();
+    audios.forEach(audio => {
+        audio.addEventListener('play', function() {
+            stopAllAudio(this.id);
         });
     });
+
+    function stopAllAudio(exceptId) {
+        audios.forEach(audio => {
+            if(audio.id !== exceptId) {
+                audio.pause();
+                audio.currentTime = 0; // Remettre à zéro si vous le souhaitez
+            }
+        });
+    }
 </script>
 
 </body>

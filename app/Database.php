@@ -12,6 +12,7 @@ class Database {
     private function __construct() {
         // Constructeur privé pour empêcher l'instanciation directe
     }
+    
 
     public static function getConnection(): \PDO {
         if (self::$instance === null) {
@@ -32,6 +33,19 @@ class Database {
             }
         }
         return self::$instance;
+    }
+
+    public function getGenres() {
+        try {
+            $sql = "SELECT id, name FROM genre";
+            $stmt = self::$instance->prepare($sql); // Utilisez self::$instance qui est votre objet PDO
+            $stmt->execute();
+    
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
     }
 }
 

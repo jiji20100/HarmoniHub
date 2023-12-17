@@ -68,7 +68,7 @@
             <li><a href="/track">Mes Tracks</a></li>
             <li><a href="favorite.php">Mes Favoris</a></li>
             <li><a href="profile.php">Mon Profil</a></li>
-            <li><form method="POST" action="logout.php">
+            <li><form method="POST" action="/logout">
                 <button type="submit" class="logout-button">Déconnexion</button>
             </form></li>
         </ul>

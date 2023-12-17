@@ -47,13 +47,23 @@ class App {
     {
         session_start();
 
-        try {
-            echo $this->router->handleRequest($this->request_uri, $this->request_method);
-        } catch (RouteNotFoundException $e) {
+        // Routes qui nécessitent une authentification
+        $protectedRoutes = ['/track', '/home', '/logout'];
+
+        // Vérifier si l'utilisateur est connecté pour les routes protégées
+        if (in_array($this->request_uri, $protectedRoutes) && !isset($_SESSION['user_id'])) {
+            header("Location: /");
+            exit;
+        }
+
+        //try {
+        echo $this->router->handleRequest($this->request_uri, $this->request_method);
+        /* } catch (RouteNotFoundException $e) {
             header("HTTP/2.0 404 Not Found");
             echo Renderer::make('Err/404');
-        }
+         }*/
     }
+
 
 }
 

@@ -16,25 +16,58 @@ class TrackController {
     public function track(): Renderer {
         return Renderer::make('tracks');
     }
-
+    
     public function upload_track() {
+        if (isset($_FILES['mp3_file'])) {
+            // Vos autres variables
+            // ...
+    
+            for ($i = 0; $i < $fileCount; $i++) {
+                $original_filename = $_FILES["mp3_file"]["name"][$i];
+                $fileType = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+    
+                if ($fileType != "mp3") {
+                    // Votre gestion des erreurs
+                } else {
+                    // Créer un nom de fichier en utilisant le nom de la piste et en ajoutant un identifiant unique
+                    $sanitized_trackName = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '_', $trackName)); // Nettoyer et sécuriser le nom
+                    $uniqueSuffix = time() . '-' . rand(0, 99999); // Suffixe unique pour éviter les conflits de nom
+                    $new_filename = $sanitized_trackName . '-' . $uniqueSuffix . '.mp3';
+    
+                    $target_file = $target_dir . $new_filename;
+    
+                    if (move_uploaded_file($_FILES["mp3_file"]["tmp_name"][$i], $target_file)) {
+                        $this->save_track_info($trackName, $genreId, $featuring, $new_filename, $target_file);
+                    } else {
+                        // Votre gestion des erreurs
+                    }
+                }
+            }
+        }
         if (isset($_FILES['mp3_file'])) {
             // Récupérer le nombre de fichiers téléchargés
             $fileCount = count($_FILES['mp3_file']['name']);
+            $trackName = $_POST['track_name'] ?? ''; // Nom de la piste
+            $genreId = $_POST['genre'] ?? ''; // ID du genre
+            $featuring = $_POST['featuring'] ?? ''; // Information sur le featuring
     
             for ($i = 0; $i < $fileCount; $i++) {
-                $target_dir = "../public/files/"; 
+                $target_dir = "../public/files/";
                 $original_filename = $_FILES["mp3_file"]["name"][$i];
+                $fileType = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
                 $sanitized_filename = str_replace(' ', '_', $original_filename); // Remplace les espaces par des tirets bas
                 $target_file = $target_dir . basename($sanitized_filename);
-                $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     
                 if ($fileType != "mp3") {
                     $_SESSION['upload_message'] = 'Seuls les fichiers MP3 sont autorisés.';
                     $_SESSION['upload_message_type'] = 'danger';
                 } else {
+                    $sanitized_trackName = preg_replace('/[^A-Za-z0-9_\-]/', '', str_replace(' ', '_', $trackName));
+                    $new_filename = $sanitized_trackName . '.mp3';
+                    $target_file = $target_dir . $new_filename;
                     if (move_uploaded_file($_FILES["mp3_file"]["tmp_name"][$i], $target_file)) {
-                        $this->save_track_info($sanitized_filename, $target_file);
+                        $path_in_bdd = "/files/" . $new_filename;
+                        $this->save_track_info($trackName, $genreId, $featuring, $sanitized_filename, $path_in_bdd);
                     } else {
                         $_SESSION['upload_message'] = 'Une erreur s\'est produite lors du téléchargement du fichier.';
                         $_SESSION['upload_message_type'] = 'danger';
@@ -51,13 +84,21 @@ class TrackController {
     }
     
 
-    private function save_track_info($filename, $path) {
+    private function save_track_info($trackName, $genreId, $featuring, $filename, $path) {
         $createdAt = date("Y-m-d H:i:s"); 
-
         try {
-            $sql = "INSERT INTO musics (title, file_path, uploaded_at) VALUES (:title, :file_path, :uploaded_at)";
+            $whoAmI = "SELECT artist_name FROM users WHERE id = :id";
+            $stmtWhoAmI = $this->db->prepare($whoAmI);
+            $stmtWhoAmI->bindParam(":id", $_SESSION['user_id']);
+            $stmtWhoAmI->execute();
+            $artistName = $stmtWhoAmI->fetchColumn();
+            
+            $sql = "INSERT INTO musics (user_id, title, artist, genre, file_path, uploaded_at) VALUES (:user_id, :title, :artist, :genre, :file_path, :uploaded_at)";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(":title", $filename);
+            $stmt->bindParam(":user_id", $_SESSION['user_id']);
+            $stmt->bindParam(":title", $trackName);
+            $stmt->bindParam(":artist", $artistName);
+            $stmt->bindParam(":genre", $genreId);
             $stmt->bindParam(":file_path", $path);
             $stmt->bindParam(":uploaded_at", $createdAt);
             $stmt->execute();
