@@ -22,13 +22,23 @@ Le projet n'est dorénavant plus sous laravel mais sous php natif il faudra fair
         Require all granted
 </Directory>
 ```
+- si vous avez une erreur 500 apres le changement du fichier apache2.conf, il faut faire la commande :
+  ```
+sudo a2enmod rewrite
+```
+faut pas oublier de restart le server Apache :
+ ```
+sudo systemctl restart apache2
+```
 
+   
 - Modifier le document root dans les fichiers <b>000-default.conf</b> et <b>default-ssl.conf</b> dans /etc/apache2/sites-available/ en y mettant le chemin vers le dossier public du projet.
 
 - Afin de pouvoir utiliser le projet, il vous faudra mettre à jour les dépendances du projet (vendor):
 ```
 composer dumpautoload
 ```
+
 
 <h2> Comment utiliser votre projet et mettreen place un espace de travail </h2>
 
