@@ -35,31 +35,31 @@ class App {
         $this->router->post('/register', ['Controllers\AuthController', 'register_process']);
 
         $this->router->set('/reset_password', ['Controllers\AuthController', 'reset_password']);
-        $this->router->set('/logout', ['Controllers\AuthController', 'logout']);
+        $this->router->post('/logout', ['Controllers\AuthController', 'logout']);
 
         $this->router->set('/home', ['Controllers\HomeController', 'index']);
     }
 
     public function run()
-{
-    session_start();
+    {
+        session_start();
 
-    // Routes qui nécessitent une authentification
-    $protectedRoutes = ['/track', '/home', '/logout'];
+        // Routes qui nécessitent une authentification
+        $protectedRoutes = ['/track', '/home', '/logout'];
 
-    // Vérifier si l'utilisateur est connecté pour les routes protégées
-    if (in_array($this->request_uri, $protectedRoutes) && !isset($_SESSION['user_id'])) {
-        header("Location: /");
-        exit;
-    }
+        // Vérifier si l'utilisateur est connecté pour les routes protégées
+        if (in_array($this->request_uri, $protectedRoutes) && !isset($_SESSION['user_id'])) {
+            header("Location: /");
+            exit;
+        }
 
-    try {
+        //try {
         echo $this->router->handleRequest($this->request_uri, $this->request_method);
-    } catch (RouteNotFoundException $e) {
-        header("HTTP/2.0 404 Not Found");
-        echo Renderer::make('Err/404');
+        /* } catch (RouteNotFoundException $e) {
+            header("HTTP/2.0 404 Not Found");
+            echo Renderer::make('Err/404');
+         }*/
     }
-}
 
 
 }
