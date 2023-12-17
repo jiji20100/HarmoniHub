@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     surname VARCHAR(50) NOT NULL,
     name VARCHAR(50) NOT NULL,
-    artist_name VARCHAR(50) NOT NULL UNIQUE,
+    artist_name VARCHAR(50) NOT NULL UNIQUE DEFAULT 'Unknown',
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -26,14 +26,16 @@ CREATE TABLE IF NOT EXISTS musics (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Création de la table des genres
 CREATE TABLE IF NOT EXISTS genre (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    genre VARCHAR(50)
+    name VARCHAR(50) NOT NULL UNIQUE
 );
 
-INSERT INTO `genre` (`id`, `name`) VALUES (NULL, 'Rap');
-INSERT INTO `genre` (`id`, `name`) VALUES (NULL, 'R&B');
-INSERT INTO `genre` (`id`, `name`) VALUES (NULL, 'Techno');
-INSERT INTO `genre` (`id`, `name`) VALUES (NULL, 'Acoustic');
-INSERT INTO `genre` (`id`, `name`) VALUES (NULL, 'Electro');
-INSERT INTO `genre` (`id`, `name`) VALUES (NULL, 'Metal');
+-- Insertion des genres
+INSERT IGNORE INTO `genre` (`name`) VALUES ('Rap');
+INSERT IGNORE INTO `genre` (`name`) VALUES ('R&B');
+INSERT IGNORE INTO `genre` (`name`) VALUES ('Techno');
+INSERT IGNORE INTO `genre` (`name`) VALUES ('Acoustic');
+INSERT IGNORE INTO `genre` (`name`) VALUES ('Electro');
+INSERT IGNORE INTO `genre` (`name`) VALUES ('Metal');
