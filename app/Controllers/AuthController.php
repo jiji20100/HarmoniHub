@@ -6,29 +6,19 @@ use Source\Database;
 
 class AuthController {
     public function index(): Renderer {
-        $this->isConnected();
         return Renderer::make('Auth/auth');
     }
 
     public function login(): Renderer {
-        $this->isConnected();
         return Renderer::make('Auth/login');
     }
 
     public function register(): Renderer {
-        $this->isConnected();
         return Renderer::make('Auth/register');
     }
 
     public function reset_password(): Renderer {
         return Renderer::make('Auth/reset_password');
-    }
-
-    private function isConnected(): void {
-        if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
-            header('Location: /home');
-            exit;
-        }
     }
 
     public function login_process(): Renderer {

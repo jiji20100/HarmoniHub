@@ -3,7 +3,9 @@
 namespace Source;
 
 use Exceptions\RouteNotFoundException;
+use Controllers\AuthController;
 use Router\Router;
+use Source\Session;
 use Source\Renderer;
 use Source\Database;
 
@@ -22,22 +24,23 @@ class App {
 
     public function initRoutes(): void
     {
-        $this->router->set('/', ['Controllers\AuthController', 'index']);
-        $this->router->set('/index', ['Controllers\AuthController', 'index']);
 
-        $this->router->set('/login', ['Controllers\AuthController', 'login']);
-        $this->router->post('/login', ['Controllers\AuthController', 'login_process']);
+        $this->router->set('/', ['Controllers\AuthController', 'index'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->set('/index', ['Controllers\AuthController', 'index'])->middleware(['Source\Session', 'redirectIfConnected']);
 
-        $this->router->set('/track', ['Controllers\TrackController', 'track']);
-        $this->router->post('/track', ['Controllers\TrackController', 'upload_track']);
+        $this->router->set('/login', ['Controllers\AuthController', 'login'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/login', ['Controllers\AuthController', 'login_process'])->middleware(['Source\Session', 'redirectIfConnected']);
 
-        $this->router->set('/register', ['Controllers\AuthController', 'register']);
-        $this->router->post('/register', ['Controllers\AuthController', 'register_process']);
+        $this->router->set('/track', ['Controllers\TrackController', 'track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/track', ['Controllers\TrackController', 'upload_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
-        $this->router->set('/reset_password', ['Controllers\AuthController', 'reset_password']);
-        $this->router->set('/logout', ['Controllers\AuthController', 'logout']);
+        $this->router->set('/register', ['Controllers\AuthController', 'register'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/register', ['Controllers\AuthController', 'register_process'])->middleware(['Source\Session', 'redirectIfConnected']);
 
-        $this->router->set('/home', ['Controllers\HomeController', 'index']);
+        $this->router->set('/reset_password', ['Controllers\AuthController', 'reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->set('/logout', ['Controllers\AuthController', 'logout'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+        $this->router->set('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
     }
 
     public function run()
