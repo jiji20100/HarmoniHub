@@ -28,8 +28,12 @@ class App {
         $this->router->set('/login', ['Controllers\AuthController', 'login']);
         $this->router->post('/login', ['Controllers\AuthController', 'login_process']);
 
+        $this->router->set('/track', ['Controllers\TrackController', 'track']);
+        $this->router->post('/track', ['Controllers\TrackController', 'upload_track']);
+
         $this->router->set('/register', ['Controllers\AuthController', 'register']);
         $this->router->post('/register', ['Controllers\AuthController', 'register_process']);
+
         $this->router->set('/reset_password', ['Controllers\AuthController', 'reset_password']);
         $this->router->set('/logout', ['Controllers\AuthController', 'logout']);
 

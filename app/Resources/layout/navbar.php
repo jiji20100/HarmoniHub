@@ -61,11 +61,11 @@
 <body>
     <nav class="navbar">
         <div class="app-name">
-            <a href="home.php">HarmoniHub</a>
+            <a href="/home">HarmoniHub</a>
         </div>
         <ul class="nav-links" id="navLinks">
             <li><a href="recherche.php">Rechercher</a></li>
-            <li><a href="tracks.php">Mes Tracks</a></li>
+            <li><a href="/track">Mes Tracks</a></li>
             <li><a href="favorite.php">Mes Favoris</a></li>
             <li><a href="profile.php">Mon Profil</a></li>
             <li><form method="POST" action="logout.php">

@@ -5,4 +5,5 @@
 app/config/config.ini
 app/config/config.php
 /public/phpmyadmin
+/public/files
 /vendor/composer/*
