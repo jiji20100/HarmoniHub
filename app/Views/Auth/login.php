@@ -1,114 +1,76 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Connexion</title>
-    <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    .container {
-        background: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 300px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    button {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #0056b3;
-        color: white;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #004494;
-    }
-
-    .alert {
-        padding: 10px;
-        background-color: #f44336;
-        color: white;
-        margin-bottom: 15px;
-        border-radius: 4px;
-        text-align: center;
-    }
-
-    a {
-        color: #0056b3;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
 </head>
-<body>
 
-    <div class="container">
+<body style="background-image: url('https://wallpapers.com/images/hd/aesthetic-music-background-cvcbu6do9krpx1wc.jpg'); background-size: cover; background-position: center; margin: 0; padding: 0; overflow: hidden;">
+
+    <div class="container py-5">
         <!-- Vérifier et afficher les messages d'erreur ou de succès stockés en session -->
-        <?php if(isset($_SESSION['error'])): ?>
+        <?php if (isset($_SESSION['error'])) : ?>
             <div class="alert alert-danger">
                 <?= $_SESSION['error']; ?>
                 <?php unset($_SESSION['error']); ?>
             </div>
         <?php endif; ?>
 
-        <?php if(isset($_SESSION['success'])): ?>
+
+        <?php if (isset($_SESSION['success'])) : ?>
             <div class="alert alert-success">
                 <?= $_SESSION['success']; ?>
                 <?php unset($_SESSION['success']); ?>
             </div>
         <?php endif; ?>
 
-        <h2>Connexion</h2>
-        
-        <!-- Formulaire de connexion -->
-        <form action="/login" method="post">
-            <div class="form-group">
-                <label for="email">Nom d'utilisateur</label>
-                <input type="text" name="email" id="email" required>
+        <div class="row d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-white text-dark" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+
+                            <!-- Formulaire de connexion avec fond blanc -->
+                            <form action="/login" method="post" class="white-bg-form">
+                                <div class="form-outline form-dark mb-4">
+                                    <label for="email" class="form-label">Nom d'utilisateur</label>
+                                    <input type="text" name="email" id="email" class="form-control form-control-lg" required>
+                                </div>
+
+                                <div class="form-outline form-dark mb-4">
+                                    <label for="password" class="form-label">Mot de passe</label>
+                                    <input type="password" name="password" id="password" class="form-control form-control-lg" required>
+                                </div>
+
+                                <button class="btn btn-outline-dark btn-lg px-5" type="submit">Login</button>
+                            </form>
+
+                            <p class="small mb-5 pb-lg-2"><a class="text-dark" href="/reset_password">Forgot password?</a></p>
+                        </div>
+
+                        <div>
+                            <p class="mb-0">Don't have an account? <a href="/register" class="text-dark fw-bold">Sign Up</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-
-            <button type="submit">Connexion</button>
-        </form>
-
-        <!-- Liens vers d'autres pages comme l'inscription ou la réinitialisation du mot de passe -->
-        <p>Pas encore de compte ? <a href="/register">Inscrivez-vous</a></p>
-        <p><a href="/reset_password">Mot de passe oublié ?</a></p>
+        </div>
     </div>
 
+    <style>
+        /* Ajouter un style pour le fond blanc du formulaire */
+        .white-bg-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
 </body>
+
 </html>

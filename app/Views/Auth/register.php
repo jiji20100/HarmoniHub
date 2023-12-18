@@ -4,57 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 50px;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #3498db;
-            text-decoration: underline;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        input{
-            width: 95%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4caf50; 
-            border: none;
-            border-radius: 4px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #45a049; 
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <?php
@@ -67,42 +17,66 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
 }
 ?>
 
-<body>
-    <div class="container">
-       
-        <h2>Inscription</h2>
+<body style="background-image: url('https://wallpapers.com/images/hd/aesthetic-music-background-cvcbu6do9krpx1wc.jpg'); background-size: cover; background-position: center; margin: 0; padding: 0; overflow: hidden;">
+    <div class="container py-5">
         <div class="erreur">
-        <?php
-            // Vérifie si des erreurs sont présentes
-            if (!empty($erreurs)) {
-                echo '<ul>';
-                foreach ($erreurs as $erreur) {
-                    echo '<li>' . $erreur . '</li>';
+            <?php
+                // Vérifie si des erreurs sont présentes
+                if (!empty($erreurs)) {
+                    echo '<ul>';
+                    foreach ($erreurs as $erreur) {
+                        echo '<li>' . $erreur . '</li>';
+                    }
+                    echo '</ul>';
                 }
-                echo '</ul>';
-            }
-            ?>
+                ?>
         </div>
-        <form action="/register" method="post">
-            <label for="surname">Prenom:</label>
-            <input type="text" id="surname" name="surname" required>
+        <div class="row d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-white text-dark" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <h2 class="fw-bold mb-2 text-uppercase">Inscription</h2>
 
-            <label for="name">Nom:</label>
-            <input type="text" id="name" name="name" required>
+                            <!-- Formulaire de connexion avec fond blanc -->
+                            <form action="/login" method="post" class="white-bg-form">
+                                <div class="form-outline form-dark mb-4">
+                                    <label for="email" class="form-label">Prenom</label>
+                                    <input type="text" name="surname" id="surname" class="form-control form-control-lg" required>
+                                </div>
 
-            <label for="email">E-Mail:</label>
-            <input type="email" id="email" name="email" required>
+                                <div class="form-outline form-dark mb-4">
+                                    <label for="password" class="form-label">Nom</label>
+                                    <input type="text" name="name" id="name" class="form-control form-control-lg" required>
+                                </div>
 
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
+                                <div class="form-outline form-dark mb-4">
+                                    <label for="email" class="form-label">E-Mail</label>
+                                    <input type="email" name="email" id="email" class="form-control form-control-lg" required>
+                                </div>
 
-            <label for="password_confirmation">Confirmer le mot de passe:</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" required>
+                                <div class="form-outline form-dark mb-4">
+                                    <label for="password" class="form-label">Mot de passe</label>
+                                    <input type="password" name="password" id="password" class="form-control form-control-lg" required>
+                                </div>
 
-            <button type="submit">S'inscrire</button>
-        </form>
-        <br>
-        <a href="login.php">Je possède déjà un compte</a>
+                                <div class="form-outline form-dark mb-4">
+                                    <label for="password" class="form-label">Confirmer le mot de passe</label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control form-control-lg" required>
+                                </div>
+
+
+                                <button class="btn btn-outline-dark btn-lg px-5" type="submit">S'inscrire</button>
+                            </form>
+                        </div>
+
+                        <div>
+                            <p class="mb-0">Déjà un compte? <a href="/login" class="text-dark fw-bold">Se connecter</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
