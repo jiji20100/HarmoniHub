@@ -132,7 +132,7 @@
                 <li><a href="/track">Mes Tracks</a></li>
                 <li><a href="/favorite">Mes Favoris</a></li>
                 <li><a href="/profile">Mon Profil</a></li>
-                <li><button class="logout-button" onclick="window.location.href='/logout'">Se déconnecter</button></li>
+                <li><form action="/logout" method="POST" style="margin: 0"><button class="logout-button">Se déconnecter</button></li>
             </ul>
         </div>
     </nav>
