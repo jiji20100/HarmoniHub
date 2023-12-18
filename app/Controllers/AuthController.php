@@ -98,11 +98,11 @@ class AuthController {
                 } else {
                     if (!$username) {
                         $username = $name . $surname;
-                        $infos = "Votre username est : " . $username;
+                        $_SESSION['infos'] = "Votre username est : " . $username;
                     }
                     if (User::getUserByArtistName($username)) {
                         $username = $username . time();
-                        $infos = "Votre username est : " . $username;
+                        $_SESSION['infos'] = "Votre username est : " . $username;
                     }
 
                     $user = User::createUser([
@@ -118,7 +118,6 @@ class AuthController {
                     } else {
                         $_SESSION['success'] = "Bravo, vous êtes maintenant inscris !";
                         $_SESSION['user_id'] = $user['id'];
-                        $_SESSION['infos'] = $infos;
                         unset($_SESSION['errors']);
                         header('Location: /login');
                         exit();
