@@ -13,37 +13,11 @@ class TrackController {
     
     public function track(): Renderer {
         $musics = Music::getTracksByUserId($_SESSION['user_id']);
-        $genres = Genre::getGenres();
+        $genres = Genre::getAllGenres();
         return Renderer::make('tracks', ['musics' => $musics, 'genres' => $genres]);
     }
     
     public function upload_track() {
-        if (isset($_FILES['mp3_file'])) {
-            // Vos autres variables
-            // ...
-    
-            for ($i = 0; $i < $fileCount; $i++) {
-                $original_filename = $_FILES["mp3_file"]["name"][$i];
-                $fileType = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
-    
-                if ($fileType != "mp3") {
-                    // Votre gestion des erreurs
-                } else {
-                    // Créer un nom de fichier en utilisant le nom de la piste et en ajoutant un identifiant unique
-                    $sanitized_trackName = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '_', $trackName)); // Nettoyer et sécuriser le nom
-                    $uniqueSuffix = time() . '-' . rand(0, 99999); // Suffixe unique pour éviter les conflits de nom
-                    $new_filename = $sanitized_trackName . '-' . $uniqueSuffix . '.mp3';
-    
-                    $target_file = $target_dir . $new_filename;
-    
-                    if (move_uploaded_file($_FILES["mp3_file"]["tmp_name"][$i], $target_file)) {
-                        $this->save_track_info($trackName, $genreId, $featuring, $new_filename, $target_file);
-                    } else {
-                        // Votre gestion des erreurs
-                    }
-                }
-            }
-        }
         if (isset($_FILES['mp3_file'])) {
             // Récupérer le nombre de fichiers téléchargés
             $fileCount = count($_FILES['mp3_file']['name']);
@@ -88,10 +62,8 @@ class TrackController {
     private function save_track_info($trackName, $genreId, $featuring, $filename, $path) {
         $createdAt = date("Y-m-d H:i:s"); 
         try {
-
             $artistName = User::getArtistNameById($_SESSION['user_id']);            
-            $result = Music::addTrack($trackName, $artistName, $genreId, $filename, $path, $createdAt, $_SESSION['user_id']);
-
+            $result = Music::addTrack($trackName, $artistName, $genreId, $path, $createdAt, $_SESSION['user_id']);
             $_SESSION['upload_message'] = 'Le fichier ' . $filename . ' a été téléchargé avec succès et enregistré dans la base de données.';
             $_SESSION['upload_message_type'] = 'success';
         } catch (PDOException $e) {
@@ -99,4 +71,90 @@ class TrackController {
             $_SESSION['upload_message_type'] = 'danger';
         }
     }
+
+    public function update() {
+        if (isset($_POST['id'])) {
+            $trackName = $_POST['track_name'] ?? ''; 
+            $genreId = $_POST['genre'] ?? ''; 
+            $featuring = $_POST['featuring'] ?? '';
+            try {
+                $result = Music::update_track($trackName, $genreId, $featuring, $_POST['id']);
+                $_SESSION['track_message'] = "Le track " . $_POST['track_name'] . " a bien été modifié";
+                $_SESSION['track_message_type'] = 'success';
+            } catch (PDOException $e) {
+                $_SESSION['track_message'] = 'Erreur de base de données : ' . $e->getMessage();
+                $_SESSION['track_message_type'] = 'danger';
+            }
+        }
+        header('Location: /track');
+        exit;
+    }
+
+    public function delete_track() {
+        if (isset($_POST['id'])) {
+            
+            $trackId = $_POST['id'];
+            $file_path = Music::getPath();
+            $file_full_path = $_SERVER['DOCUMENT_ROOT'] . $file_path[0]["file_path"];
+            // Étape 2 : Supprimer le fichier s'il existe
+            if (file_exists($file_full_path)) {
+                unlink($file_full_path);
+            }
+            if (Music::delete_track($trackId)) {
+                $_SESSION['track_message'] = 'Track supprimé avec succès.';
+                $_SESSION['track_message_type'] = 'success';
+            } else {
+                $_SESSION['track_message'] = 'Erreur lors de la suppression du track.';
+                $_SESSION['track_message_type'] = 'danger';
+            }
+
+            header('Location: /track');
+            exit;
+        }
+    }
+
+    public function show_update_form_track() {
+        $formHtml = '';
+        if (isset($_POST['id'])) {
+            $trackId = $_POST['id'];
+            try {
+                $track = Music::getTrackById($trackId);
+                $genres = Genre::getAllGenres();
+                if ($track) {
+                    $formHtml =  '<form action="/update_track" method="POST" enctype="multipart/form-data" class="update-form">';
+                    $formHtml .= '<input type="hidden" name="id" value="' . htmlspecialchars($track['id']) . '">';
+
+                    $formHtml .= '<label for="track_name">Titre :</label>';
+                    $formHtml .= '<input type="text" name="track_name" id="track_name" value="' . htmlspecialchars($track['title']) . '" required>';
+
+                    $formHtml .= '<label for="featuring">Featuring :</label>';
+                    $formHtml .= '<input type="text" name="featuring" id="featuring" value="' . htmlspecialchars($track['featuring']) . '">';
+
+                    $formHtml .= '<label for="genre">Genre :</label>';
+                    $formHtml .= '<select name="genre" id="genre">';
+                    foreach ($genres as $genre) {
+                        $selected = ($genre['id'] == $track['genre']) ? ' selected' : '';
+                        $formHtml .= '<option value="' . htmlspecialchars($genre['id']) . '"' . $selected . '>' . htmlspecialchars($genre['name']) . '</option>';
+                    }
+                    $formHtml .= '</select>';
+
+                    $formHtml .= '<label for="track_file">Changer le fichier MP3 :</label>';
+                    $formHtml .= '<input type="file" name="track_file" id="track_file">';
+
+                    $formHtml .= '<button type="submit">Mettre à jour</button>';
+                    $formHtml .= '</form>';
+                } else {
+                    $formHtml .= 'Track non trouvé.';
+                }
+            } catch (Exception $e) {
+                $formHtml .= 'Erreur : ' . $e->getMessage();
+            }
+        } else {
+            $formHtml .= 'Aucun ID de track spécifié.';
+        }
+
+        return $formHtml;
+    }
+
+    
 }

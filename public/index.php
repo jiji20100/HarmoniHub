@@ -16,6 +16,10 @@ $app = new App($router, $_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
 
 $app->initRoutes();
 
+function isAjaxRequest() {
+    return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+}
+
 ?>
 
 <html lang="en">
@@ -23,8 +27,15 @@ $app->initRoutes();
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>App</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="app.css">
     </head>
-    <?php $app->run(); ?>
+    <?php
+    $excludeNavbarOn = ['/login', '/register', '/reset_password', '/'];
+    $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    if (!isAjaxRequest() && !in_array($currentPath, $excludeNavbarOn)) 
+    {
+        include '../app/Resources/layout/navbar.php'; 
+    }
+    $app->run(); 
+    ?>
 </html>
