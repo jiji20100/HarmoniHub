@@ -32,6 +32,15 @@ CREATE TABLE IF NOT EXISTS genres (
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
+-- Creation de la table des favoris
+CREATE TABLE IF NOT EXISTS favorites (
+    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(11) UNSIGNED,
+    music_id INT(11) UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
+);
+
 -- Insertion des genres
 INSERT IGNORE INTO `genres` (`name`) VALUES ('Rap');
 INSERT IGNORE INTO `genres` (`name`) VALUES ('R&B');

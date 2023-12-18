@@ -49,6 +49,10 @@ class App {
         $this->router->get('/profile', ['Controllers\ProfileController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->get('/profile/edit', ['Controllers\ProfileController', 'edit'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/profile/edit_process', ['Controllers\ProfileController', 'edit_process'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+        $this->router->get('/favorite', ['Controllers\FavorisController', 'favoris'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/addFavorite', ['Controllers\FavorisController', 'addFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/removeFavorite', ['Controllers\FavorisController', 'removeFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
     }
 
     public function run()
