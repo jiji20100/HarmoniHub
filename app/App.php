@@ -20,6 +20,7 @@ class App {
         $this->router = $router;
         $this->request_uri = $request_uri;
         $this->request_method = $request_method; 
+        $db = Database::getConnection();
     }
 
     public function initRoutes(): void

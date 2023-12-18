@@ -9,21 +9,22 @@ use Models\Music;
 
 class ProfileController {
     public function index(): Renderer {
-
-        $connexion = Database::getConnection();
         $user = User::getUserById($_SESSION['user_id']);
         $user_music = Music::getTracksByUserId($_SESSION['user_id']);
         
-        return Renderer::make('Profile/profile', ['user' => $user, 'user_music' => $user_music]);
+        $render = Renderer::make('Profile/profile', ['user' => $user, 'user_music' => $user_music]);
+        unset($_SESSION['success']); 
+        return $render;
     }
 
     public function edit(): Renderer {
-        $connexion = Database::getConnection();
         $user = User::getUserById($_SESSION['user_id']);
         $user_music = Music::getTracksByUserId($_SESSION['user_id']);
         $errors = $_SESSION['errors'] ?? [];
 
-        return Renderer::make('Profile/edit', ['user' => $user, 'user_music' => $user_music, 'errors' => $errors]);
+        $render = Renderer::make('Profile/edit', ['user' => $user, 'user_music' => $user_music, 'errors' => $errors]);
+        unset($_SESSION['errors']); 
+        return $render;
     }
 
     public function edit_process(): void {
@@ -44,7 +45,6 @@ class ProfileController {
             if (empty($email)) {
                 $errors["email"] = "L'email est obligatoire.";
             } else {
-                $connexion = Database::getConnection();
                 $user = User::getUserByEmail($email);
                 if ($user) {
                     $errors["email"] = "Un utilisateur existe déjà avec cet e-mail.";

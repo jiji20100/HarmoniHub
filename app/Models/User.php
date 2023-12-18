@@ -33,6 +33,19 @@ class User extends Database {
         }
     }
 
+    public static function getArtistNameById(int $id): string | bool {
+        try {
+            $query = "SELECT artist_name FROM " . self::$table . " WHERE id = $id";
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchColumn();
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return '';
+        }
+    }
+
     public static function updateUser(int $id, array $data): bool {
         try {
             $query = "UPDATE " . self::$table . " SET ";

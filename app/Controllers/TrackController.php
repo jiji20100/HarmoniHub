@@ -5,16 +5,17 @@ namespace Controllers;
 use PDOException;
 use Source\Renderer;
 use Source\Database;
+use Models\Music;
+use Models\User;
+use Models\Genre;
 
 class TrackController {
-    private $db;
-
-    public function __construct() {
-        $this->db = Database::getConnection();
-    }
-
+    
     public function track(): Renderer {
-        return Renderer::make('tracks');
+        $musics = Music::getTracksByUserId($_SESSION['user_id']);
+        $genres = Genre::getGenres();
+        var_dump($_SESSION);
+        return Renderer::make('tracks', ['musics' => $musics, 'genres' => $genres]);
     }
     
     public function upload_track() {
@@ -65,6 +66,7 @@ class TrackController {
                     $sanitized_trackName = preg_replace('/[^A-Za-z0-9_\-]/', '', str_replace(' ', '_', $trackName));
                     $new_filename = $sanitized_trackName . '.mp3';
                     $target_file = $target_dir . $new_filename;
+                    $_SESSION['target_file'] = $target_file;
                     if (move_uploaded_file($_FILES["mp3_file"]["tmp_name"][$i], $target_file)) {
                         $path_in_bdd = "/files/" . $new_filename;
                         $this->save_track_info($trackName, $genreId, $featuring, $sanitized_filename, $path_in_bdd);
@@ -87,21 +89,9 @@ class TrackController {
     private function save_track_info($trackName, $genreId, $featuring, $filename, $path) {
         $createdAt = date("Y-m-d H:i:s"); 
         try {
-            $whoAmI = "SELECT artist_name FROM users WHERE id = :id";
-            $stmtWhoAmI = $this->db->prepare($whoAmI);
-            $stmtWhoAmI->bindParam(":id", $_SESSION['user_id']);
-            $stmtWhoAmI->execute();
-            $artistName = $stmtWhoAmI->fetchColumn();
-            
-            $sql = "INSERT INTO musics (user_id, title, artist, genre, file_path, uploaded_at) VALUES (:user_id, :title, :artist, :genre, :file_path, :uploaded_at)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(":user_id", $_SESSION['user_id']);
-            $stmt->bindParam(":title", $trackName);
-            $stmt->bindParam(":artist", $artistName);
-            $stmt->bindParam(":genre", $genreId);
-            $stmt->bindParam(":file_path", $path);
-            $stmt->bindParam(":uploaded_at", $createdAt);
-            $stmt->execute();
+
+            $artistName = User::getArtistNameById($_SESSION['user_id']);            
+            $result = Music::addTrack($trackName, $artistName, $genreId, $filename, $path, $createdAt, $_SESSION['user_id']);
 
             $_SESSION['upload_message'] = 'Le fichier ' . $filename . ' a été téléchargé avec succès et enregistré dans la base de données.';
             $_SESSION['upload_message_type'] = 'success';

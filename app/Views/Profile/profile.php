@@ -98,7 +98,7 @@
                 <?php echo $_SESSION['success']; ?>
                 <i class="fas fa-check-circle"></i>
             </div>
-            <?php unset($_SESSION['success']); }?>
+            <?php }?>
         </div>
     </section>
 </body>

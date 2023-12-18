@@ -33,6 +33,25 @@ class Music extends Database {
             return [];
         }
     }
+
+    public static function addTrack($title, $artist, $genre, $file_path, $uploaded_at, $user_id): bool {
+        try {
+            $query = "INSERT INTO " . self::$table . " (title, artist, genre, file_path, uploaded_at, user_id) VALUES (:title, :artist, :genre, :file_path, :uploaded_at, :user_id)";
+            $stmt = self::$instance->prepare($query);
+            $stmt->bindParam(":title", $title);
+            $stmt->bindParam(":artist", $artist);
+            $stmt->bindParam(":genre", $genre);
+            $stmt->bindParam(":file_path", $file_path);
+            $stmt->bindParam(":uploaded_at", $uploaded_at);
+            $stmt->bindParam(":user_id", $user_id);
+            $stmt->execute();
+
+            return true;
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return false;
+        }
+    }
 }
 
 ?>
