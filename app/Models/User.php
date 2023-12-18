@@ -33,6 +33,19 @@ class User extends Database {
         }
     }
 
+    public static function getUserByArtistName(string $artist_name): array | bool {
+        try {
+            $query = "SELECT * FROM " . self::$table . " WHERE artist_name = '$artist_name'";
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
+    }
+
     public static function getArtistNameById(int $id): string | bool {
         try {
             $query = "SELECT artist_name FROM " . self::$table . " WHERE id = $id";
@@ -43,6 +56,34 @@ class User extends Database {
         } catch (\PDOException $e) {
             echo "Erreur de base de données : " . $e->getMessage();
             return '';
+        }
+    }
+
+    public static function createUser(array $data): bool {
+        try {
+            $query = "INSERT INTO " . self::$table . " (";
+
+            foreach($data as $key => $value) {
+                $query .= "$key, ";
+            }
+
+            $query = rtrim($query, ", ");
+            $query .= ") VALUES (";
+
+            foreach($data as $key => $value) {
+                $query .= ":$key, ";
+            }
+
+            $query = rtrim($query, ", ");
+            $query .= ")";
+
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute($data);
+
+            return true;
+        } catch (\PDOException $e) {
+            echo "Database Error: " . $e->getMessage();
+            return false;
         }
     }
 
