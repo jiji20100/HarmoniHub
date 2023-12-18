@@ -45,6 +45,7 @@ class AuthController {
                     if (password_verify($password, $user['password'])) {
                         $_SESSION['is_logged_in'] = true;
                         $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['welcome_message'] = "Bienvenue " . $user['name'] . " " . $user['surname'] . " !";
                         unset($_SESSION['error']);
                         header('Location: /home');
                         exit();
@@ -112,6 +113,12 @@ class AuthController {
                         'email' => $email,
                         'password' => password_hash($password, PASSWORD_DEFAULT)
                     ]);
+
+                    //crée dossier de l'utilisateur (avec son id)
+                    $path = '../public/files/' . $user['id'] . '/';
+                    if (!file_exists($path)) {
+                        mkdir($path, 0777, true);
+                    }
 
                     if (!$user) {
                         $erreurs[] = "Erreur lors de l'inscription.";

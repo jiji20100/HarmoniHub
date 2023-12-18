@@ -13,7 +13,7 @@ class HomeController
         //$userModel = new User();
         //$users = $userModel->all();
 
-        return Renderer::make('home');
+        return Renderer::make('Home/home');
     }
 }
 

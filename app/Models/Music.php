@@ -47,6 +47,47 @@ class Music extends Database {
         }
     }
 
+    public static function getLastTracks(): array {
+        try {
+            $query = "SELECT * FROM " . self::$table . " ORDER BY uploaded_at DESC LIMIT 10";
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
+    }
+
+    public static function getTracksByGenreId(int $id): array {
+        try {
+            $query = "SELECT * FROM " . self::$table . " WHERE genre = $id";
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
+    }
+
+    public static function getBestTracks(): array {
+        try {
+            $query = "SELECT * FROM " . self::$table . " ORDER BY likes DESC LIMIT 10";
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
+    }
+
+
+
     public static function addTrack($trackName, $artistName, $genreId, $path, $createdAt, $user_id): bool {
        try {
             $query = "INSERT INTO " . self::$table . " (user_id, title, artist, genre, file_path, uploaded_at) VALUES (:user_id, :title, :artist, :genre, :file_path, :uploaded_at)";

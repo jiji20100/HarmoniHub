@@ -26,7 +26,11 @@ class TrackController {
             $featuring = $_POST['featuring'] ?? ''; // Information sur le featuring
     
             for ($i = 0; $i < $fileCount; $i++) {
-                $target_dir = "../public/files/";
+                $target_dir = "../public/files/" . $_SESSION['user_id'] . "/";
+                if (!file_exists($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
+
                 $original_filename = $_FILES["mp3_file"]["name"][$i];
                 $fileType = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
                 $sanitized_filename = str_replace(' ', '_', $original_filename); // Remplace les espaces par des tirets bas
