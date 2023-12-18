@@ -14,7 +14,6 @@ class TrackController {
     public function track(): Renderer {
         $musics = Music::getTracksByUserId($_SESSION['user_id']);
         $genres = Genre::getGenres();
-        var_dump($_SESSION);
         return Renderer::make('tracks', ['musics' => $musics, 'genres' => $genres]);
     }
     
