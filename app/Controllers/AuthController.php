@@ -2,7 +2,7 @@
 namespace Controllers;
 
 use Source\Renderer;
-use Source\Database;
+use Models\User;
 
 class AuthController {
     public function index(): Renderer {
@@ -22,11 +22,6 @@ class AuthController {
     }
 
     public function login_process(): Renderer {
-        // Rediriger si déjà connecté
-        if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
-            header('Location: /home');
-            exit;
-        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erreurs = [];
             $email = $_POST['email'];
@@ -38,17 +33,10 @@ class AuthController {
             }
 
             if (empty($erreurs)) {
-                $connexion = Database::getConnection();
-                // Vérifie si l'email existe déjà
-                $query = "SELECT * FROM users WHERE email = :email";
-                $stmt = $connexion->prepare($query);
-                $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
-                $stmt->execute();
-                $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+                $user = User::getUserByEmail($email);
                 if ($user) {
                     if (password_verify($password, $user['password'])) {
-                        session_start();
                         $_SESSION['is_logged_in'] = true;
                         $_SESSION['user_id'] = $user['id'];
                         header('Location: /home');
@@ -63,12 +51,7 @@ class AuthController {
 
             if (!empty($erreurs)) {
                 $_SESSION['error'] = implode(' ', $erreurs);
-                header('Location: /login');
-                exit();
             }
-
-            header('Location: /login');
-            exit();
         }
 
         // Si la méthode HTTP n'est pas POST, redirigez vers la page de connexion
@@ -77,16 +60,10 @@ class AuthController {
     }
 
     public function register_process() {
-
-        // Rediriger si déjà connecté
-        if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
-            header('Location: home.php');
-            exit;
-        }
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $surname = $_POST['surname'];
             $name = $_POST['name'];
+            $username = $_POST['username'];
             $email = $_POST['email'];
             $password = $_POST['password'];
             $passwordConfirmation = $_POST['password_confirmation'];
@@ -107,38 +84,42 @@ class AuthController {
             }
 
             if (empty($erreurs)) {
-                try {
-                    $connexion = Database::getConnection();
 
-                    // Vérifier si l'email est déjà utilisé
-                    $stmt = $connexion->prepare("SELECT * FROM users WHERE email = :email");
-                    $stmt->bindParam(':email', $email);
-                    $stmt->execute();
-
-                    if ($stmt->fetch()) {
-                        $erreurs[] = "Cette adresse e-mail est déjà utilisée.";
-                    } else {
-                        // Insérer l'utilisateur dans la base de données
-                        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                        $stmt = $connexion->prepare("INSERT INTO users (name, surname, email, password) VALUES (:name, :surname, :email, :password)");
-                        $stmt->bindParam(':name', $name);
-                        $stmt->bindParam(':surname', $surname);
-                        $stmt->bindParam(':email', $email);
-                        $stmt->bindParam(':password', $hashedPassword);
-                        $stmt->execute();
-
-                        // Redirection ou gestion de la session
-                        $_SESSION['success'] = "Bravo, vous êtes maintenant inscris !";
-                        $_SESSION['user_id'] = $connexion->lastInsertId();
-                        header('Location: login');
-                        exit;
+                if (User::getUserByEmail($email)) {
+                    $erreurs[] = "Un utilisateur existe déjà avec cet e-mail.";
+                } else {
+                    if (!$username) {
+                        $username = $name . $surname;
                     }
-                } catch (PDOException $e) {
-                    $erreurs[] = "Erreur lors de l'inscription : " . $e->getMessage();
+                    if (User::getUserByArtistName($username)) {
+                        $username = $username . time();
+                    }
+
+                    $user = User::createUser([
+                        'name' => $name,
+                        'surname' => $surname,
+                        'artist_name' => $username,
+                        'email' => $email,
+                        'password' => password_hash($password, PASSWORD_DEFAULT)
+                    ]);
+
+                    if (!$user) {
+                        $erreurs[] = "Erreur lors de l'inscription.";
+                    } else {
+                        $_SESSION['success'] = "Bravo, vous êtes maintenant inscris !";
+                        $_SESSION['user_id'] = $user['id'];
+                        unset($_SESSION['errors']);
+                        header('Location: /login');
+                        exit();
+                    }
                 }
             }
 
-            // Gérer l'affichage des erreurs ici si nécessaire
+            if (!empty($erreurs)) {
+                $_SESSION['errors'] = implode(' ', $erreurs);
+                header('Location: /register');
+                exit();
+            }            
         }
     }
 
