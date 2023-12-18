@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* Ajouter un style pour le fond blanc du formulaire */
+        .white-bg-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body style="background-image: url('https://wallpapers.com/images/hd/aesthetic-music-background-cvcbu6do9krpx1wc.jpg'); background-size: cover; background-position: center; margin: 0; padding: 0; overflow: hidden;">
-    <div class="container py-5">
+    <div class="container pl-5 pr-5">
         <div class="erreur">
             <?php
                 // Vérifie si des erreurs sont présentes
@@ -25,7 +34,7 @@
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card bg-white text-dark" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center">
-                        <div class="mb-md-5 mt-md-4 pb-5">
+                        <div>
                             <h2 class="fw-bold mb-2 text-uppercase">Inscription</h2>
 
                             <!-- Formulaire de connexion avec fond blanc -->

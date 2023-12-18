@@ -5,12 +5,20 @@
     <meta charset="UTF-8">
     <title>Connexion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
+    <style>
+        /* Ajouter un style pour le fond blanc du formulaire */
+        .white-bg-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body style="background-image: url('https://wallpapers.com/images/hd/aesthetic-music-background-cvcbu6do9krpx1wc.jpg'); background-size: cover; background-position: center; margin: 0; padding: 0; overflow: hidden;">
 
-    <div class="container py-5">
+    <div class="container pl-5 pr-5">
         <!-- Vérifier et afficher les messages d'erreur ou de succès stockés en session -->
         <?php if (isset($_SESSION['error'])) : ?>
             <div class="alert alert-danger">
@@ -30,9 +38,9 @@
         <div class="row d-flex justify-content-center align-items-center" style="min-height: 100vh;">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card bg-white text-dark" style="border-radius: 1rem;">
-                    <div class="card-body p-5 text-center">
-                        <div class="mb-md-5 mt-md-4 pb-5">
-                            <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                    <div class="card-body p-5  text-center">
+                        <div>
+                            <h2 class="fw-bold mb-3 text-uppercase">Login</h2>
 
                             <!-- Formulaire de connexion avec fond blanc -->
                             <form action="/login" method="post" class="white-bg-form">
@@ -61,15 +69,7 @@
         </div>
     </div>
 
-    <style>
-        /* Ajouter un style pour le fond blanc du formulaire */
-        .white-bg-form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    
 
 </body>
 
