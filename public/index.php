@@ -29,5 +29,13 @@ function isAjaxRequest() {
         <title>App</title>
         <link rel="stylesheet" href="app.css">
     </head>
-    <?php $app->run(); ?>
+    <?php
+    $excludeNavbarOn = ['/login', '/register', '/reset_password', '/'];
+    $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    if (!isAjaxRequest() && !in_array($currentPath, $excludeNavbarOn)) 
+    {
+        include '../app/Resources/layout/navbar.php'; 
+    }
+    $app->run(); 
+    ?>
 </html>
