@@ -40,6 +40,8 @@ class App {
 
         $this->router->get('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
+        $this->router->get('/admin', ['Controllers\AdminController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
         $this->router->get('/track', ['Controllers\TrackController', 'track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/track', ['Controllers\TrackController', 'upload_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/show_update_form_track', ['Controllers\TrackController', 'show_update_form_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
