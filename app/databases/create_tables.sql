@@ -13,19 +13,27 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Création de la table des genres
+CREATE TABLE IF NOT EXISTS genres (
+    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
+
 -- Création de la table des musiques
 CREATE TABLE IF NOT EXISTS musics (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id INT(11) UNSIGNED,
     title VARCHAR(100) NOT NULL,
     artist VARCHAR(100) NOT NULL,
-    genre VARCHAR(50) NOT NULL,
+    genre INT(11) UNSIGNED NOT NULL,
     featuring VARCHAR(50),
     file_path VARCHAR(255) NOT NULL,
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     note INT(11) UNSIGNED,
     private BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (genre) REFERENCES genres(id) ON DELETE CASCADE
 );
 
 -- Création de la table des playlists
@@ -36,12 +44,6 @@ CREATE TABLE IF NOT EXISTS playlists (
     name VARCHAR(50) NOT NULL DEFAULT 'My playlist',
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
-);
-
--- Création de la table des genres
-CREATE TABLE IF NOT EXISTS genres (
-    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
 );
 
 -- Création de la table des favoris

@@ -11,16 +11,16 @@ VALUES ('Doe', 'John', 'JohnDoe', 'john.doe@example.com', '$2y$12$Kt4LZgiDAZHR7f
 
 -- Insertion des musiques
 INSERT INTO musics (user_id, title, artist, genre, featuring, file_path, note)
-VALUES  (1, 'My song', 'JohnDoe', 'Rap', NULL, 'musics/JohnDoe/My song.mp3', 5),
-        (1, 'My second song', 'JohnDoe', 'Rap', 'JaneSmith', 'musics/JohnDoe/My second song.mp3', 4),
-        (2, 'My song', 'JaneSmith', 'Rap', NULL, 'musics/JaneSmith/My song.mp3', 3),
-        (2, 'My second song', 'JaneSmith', 'Rap', 'JohnDoe', 'musics/JaneSmith/My second song.mp3', 2),
-        (3, 'My song', 'Unknown', 'Rap', NULL, 'musics/Unknown/My song.mp3', 1),
-        (3, 'My second song', 'Unknown', 'Rap', 'JohnDoe', 'musics/Unknown/My second song.mp3', 0),
-        (4, 'My song', 'DeliensSamuel', 'Rap', NULL, 'musics/DeliensSamuel/My song.mp3', 0),
-        (4, 'My second song', 'DeliensSamuel', 'Rap', 'JohnDoe', 'musics/DeliensSamuel/My second song.mp3', 0),
-        (5, 'My song', 'RifiJihad', 'Rap', NULL, 'musics/RifiJihad/My song.mp3', 0),
-        (5, 'My second song', 'RifiJihad', 'Rap', 'JohnDoe', 'musics/RifiJihad/My second song.mp3', 0);
+VALUES  (1, 'My song', 'JohnDoe', 1, NULL, 'musics/JohnDoe/My song.mp3', 5),
+        (1, 'My second song', 'JohnDoe', 1, 'JaneSmith', 'musics/JohnDoe/My second song.mp3', 4),
+        (2, 'My song', 'JaneSmith', 2, NULL, 'musics/JaneSmith/My song.mp3', 3),
+        (2, 'My second song', 'JaneSmith', 3, 'JohnDoe', 'musics/JaneSmith/My second song.mp3', 2),
+        (3, 'My song', 'Unknown', 2, NULL, 'musics/Unknown/My song.mp3', 1),
+        (3, 'My second song', 'Unknown', 5, 'JohnDoe', 'musics/Unknown/My second song.mp3', 0),
+        (4, 'My song', 'DeliensSamuel', 6, NULL, 'musics/DeliensSamuel/My song.mp3', 0),
+        (4, 'My second song', 'DeliensSamuel', 5, 'JohnDoe', 'musics/DeliensSamuel/My second song.mp3', 0),
+        (5, 'My song', 'RifiJihad', 2, NULL, 'musics/RifiJihad/My song.mp3', 0),
+        (5, 'My second song', 'RifiJihad', 6, 'JohnDoe', 'musics/RifiJihad/My second song.mp3', 0);
 
 
 -- Insertion des notes
