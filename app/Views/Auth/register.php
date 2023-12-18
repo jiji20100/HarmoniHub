@@ -7,16 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
-<?php
-// Vérifie si l'utilisateur est déjà connecté pour le rediriger
-session_start(); 
-
-if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
-    header('Location: home.php');
-    exit;
-}
-?>
-
 <body style="background-image: url('https://wallpapers.com/images/hd/aesthetic-music-background-cvcbu6do9krpx1wc.jpg'); background-size: cover; background-position: center; margin: 0; padding: 0; overflow: hidden;">
     <div class="container py-5">
         <div class="erreur">

@@ -55,6 +55,7 @@
         }
     </style>
 </head>
+<?php include '../app/Resources/layout/navbar.php'; ?>
 <body>
 
 <div class="container">
