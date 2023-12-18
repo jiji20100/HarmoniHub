@@ -53,6 +53,13 @@ class App {
         $this->router->get('/favorite', ['Controllers\FavorisController', 'favoris'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/addFavorite', ['Controllers\FavorisController', 'addFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/removeFavorite', ['Controllers\FavorisController', 'removeFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+    
+        $this->router->get('/rechercher', ['Controllers\SearchController', 'search'])
+        ->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+        $this->router->get('/search-form', ['Controllers\SearchController', 'showSearchForm'])
+        ->middleware(['Source\Session', 'redirectIfNotConnected']);
+    
     }
 
     public function run()
