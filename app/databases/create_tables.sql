@@ -33,6 +33,16 @@ CREATE TABLE IF NOT EXISTS genres (
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
+-- Création de la table des favoris
+CREATE TABLE IF NOT EXISTS favorites (
+    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(11) UNSIGNED,
+    music_id INT(11) UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
+);
+
+-- Création de la table des notes
 CREATE TABLE IF NOT EXISTS notes (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id INT(11) UNSIGNED,
@@ -42,6 +52,7 @@ CREATE TABLE IF NOT EXISTS notes (
     FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
 );
 
+-- Création de la table des commentaires
 CREATE TABLE IF NOT EXISTS comments (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id INT(11) UNSIGNED,
@@ -51,14 +62,13 @@ CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
 );
 
+-- Création de la table des messages
 CREATE TABLE IF NOT EXISTS messages (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id INT(11) UNSIGNED,
     music_id INT(11) UNSIGNED,
     message TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
-);
+
 
 -- Insertion des genres
 INSERT IGNORE INTO `genres` (`name`) VALUES ('Rap');
