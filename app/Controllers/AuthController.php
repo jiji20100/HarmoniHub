@@ -39,6 +39,7 @@ class AuthController {
                     if (password_verify($password, $user['password'])) {
                         $_SESSION['is_logged_in'] = true;
                         $_SESSION['user_id'] = $user['id'];
+                        unset($_SESSION['error']);
                         header('Location: /home');
                         exit();
                     } else {
