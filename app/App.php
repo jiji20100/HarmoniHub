@@ -22,24 +22,34 @@ class App {
 
     public function initRoutes(): void
     {
-        $this->router->set('/', ['Controllers\AuthController', 'index']);
-        $this->router->set('/index', ['Controllers\AuthController', 'index']);
+        $this->router->get('/', ['Controllers\AuthController', 'index'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->get('/index', ['Controllers\AuthController', 'index'])->middleware(['Source\Session', 'redirectIfConnected']);
 
-        $this->router->set('/login', ['Controllers\AuthController', 'login']);
-        $this->router->post('/login', ['Controllers\AuthController', 'login_process']);
+        $this->router->get('/login', ['Controllers\AuthController', 'login'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/login', ['Controllers\AuthController', 'login_process'])->middleware(['Source\Session', 'redirectIfConnected']);
 
-        $this->router->set('/register', ['Controllers\AuthController', 'register']);
-        $this->router->post('/register', ['Controllers\AuthController', 'register_process']);
+        $this->router->get('/register', ['Controllers\AuthController', 'register'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/register', ['Controllers\AuthController', 'register_process'])->middleware(['Source\Session', 'redirectIfConnected']);
 
-        $this->router->set('/reset_password', ['Controllers\AuthController', 'reset_password']);
-        $this->router->post('/reset_password', ['Controllers\AuthController', 'send_reset_password']);
-        $this->router->set('/make_reset_password', ['Controllers\AuthController', 'make_reset_password']);
-        $this->router->post('/make_reset_password', ['Controllers\AuthController', 'make_reset_password_process']);
+        $this->router->get('/reset_password', ['Controllers\AuthController', 'reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/reset_password', ['Controllers\AuthController', 'send_reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/make_reset_password', ['Controllers\AuthController', 'make_reset_password_process'])->middleware(['Source\Session', 'redirectIfConnected']);
+        
+        $this->router->post('/logout', ['Controllers\AuthController', 'logout'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
+        $this->router->get('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
-        $this->router->set('/logout', ['Controllers\AuthController', 'logout']);
+        $this->router->get('/track', ['Controllers\TrackController', 'track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/track', ['Controllers\TrackController', 'upload_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/show_update_form_track', ['Controllers\TrackController', 'show_update_form_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/update_track', ['Controllers\TrackController', 'update'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/delete_track', ['Controllers\TrackController', 'delete_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
-        $this->router->set('/home', ['Controllers\HomeController', 'index']);
+        $this->router->get('/profile', ['Controllers\ProfileController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->get('/profile/edit', ['Controllers\ProfileController', 'edit'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/profile/edit_process', ['Controllers\ProfileController', 'edit_process'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+        
     }
 
     public function run()
