@@ -1,25 +1,60 @@
 <?php
+
 namespace Router;
 
+use Source\Session;
 use Exceptions\RouteNotFoundException;
 
 class Router {
 
     private array $routes = [];
+    private array $currentRoute = [];
 
-    public function set(string $path, callable|array $action): void {
-        $this->routes['GET ' . $path] = $action;
+    public function set(string $path, callable|array $action, string $requestType = 'GET'): self {
+        $this->currentRoute = [
+            'path' => $path,
+            'action' => $action,
+            'middlewares' => [],
+            'requestType' => $requestType,
+        ];
+
+        return $this;
     }
 
-    public function post(string $path, callable|array $action): void {
-        $this->routes['POST ' . $path] = $action;
+    public function get(string $path, callable|array $action) {
+        return $this->set($path, $action, 'GET');
+    }
+
+    public function post(string $path, callable|array $action) {
+        return $this->set($path, $action, 'POST');
+    }
+
+    public function middleware(array $middlewares): self {
+        $this->currentRoute['middlewares'][] = $middlewares;
+        $this->routes[
+            $this->currentRoute['requestType'] . ' ' . $this->currentRoute['path']
+        ] = $this->currentRoute;
+        $this->currentRoute = [];
+
+        return $this;
     }
 
     public function handleRequest(string $uri, string $requestType) {
         $path = explode('?', $uri)[0];
         $fullPath = $requestType . ' ' . $path;
-        $action = $this->routes[$fullPath] ?? null;
+        $route = $this->routes[$fullPath] ?? null;
 
+        if ($route['middlewares']) {
+            foreach ($route['middlewares'] as $middleware) {
+                [$className, $method] = $middleware;
+                if (class_exists($className) && method_exists($className, $method)) {
+                    $class = new $className();
+                    call_user_func_array([$class, $method], []);
+                }
+            }
+        }
+
+        $action = $route['action'];
         if (is_callable($action)) {
             return $action();
         }
