@@ -42,6 +42,11 @@ sudo systemctl restart apache2
 composer dumpautoload
 ```
 
+- Finalement, il vous faudra mettre tous les droits des fichiers du projet en RWE pour que le projet fonctionne correctement :
+```
+sudo chmod -R 777 .
+```
+
 <h2> Comment utiliser votre projet et mettreen place un espace de travail </h2>
 
 Pour ajouter une route. Par example, imaginons que vous souhaitez travailler sur la page "favoris". Pour y accéder, il faut mettre en place une route.
@@ -59,8 +64,23 @@ public function index(): Renderer
 
 - Ajouter une route dans app/App.php dans la fonction initRoutes :
 ```
-$this->router->set('/', ['Controllers\FavorisController', 'index']);
+$this->router
+    ->set('/', ['Controllers\FavorisController', 'index'])
+    ->middleware('Source\Session', 'redirectIfNotConnected');
 ```
 Mettez à jour le lien de redirection dans votre page pour rediriger vers "/favoris".
+Mettez les fonctions à exécuter dans le middleware ("redirectIfNotConnected" redirigera si non connecté)
 
-Vous pouvez maintenant accéder à votre page favoris ! 
+
+Règles de codage (Afin de faciliter la lecture du code et de faciliter l'avancement du projet):
+- Pensez à bien séparer la vue, le controller et ne doit pas avoir d'html ou de SQL et le modèle doit avoir le minimum de php et html possible. 
+
+- Toutes les requêtes SQL doivent être dans le modèle. 
+- Pensez à bien séparer les fonctions dans les modèles propres à chaque table de la base de donnée.
+
+- Vous pouvez passer des variables à la vue en faisant: 
+```
+return Renderer::make('favoris', ['variable' => $variable]);
+```
+
+- La BDD ne doit pas être utilisé directement, il faut passer par les modèles.

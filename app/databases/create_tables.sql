@@ -27,15 +27,15 @@ CREATE TABLE IF NOT EXISTS musics (
 );
 
 -- Création de la table des genres
-CREATE TABLE IF NOT EXISTS genre (
+CREATE TABLE IF NOT EXISTS genres (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
 -- Insertion des genres
-INSERT IGNORE INTO `genre` (`name`) VALUES ('Rap');
-INSERT IGNORE INTO `genre` (`name`) VALUES ('R&B');
-INSERT IGNORE INTO `genre` (`name`) VALUES ('Techno');
-INSERT IGNORE INTO `genre` (`name`) VALUES ('Acoustic');
-INSERT IGNORE INTO `genre` (`name`) VALUES ('Electro');
-INSERT IGNORE INTO `genre` (`name`) VALUES ('Metal');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Rap');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('R&B');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Techno');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Acoustic');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Electro');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Metal');

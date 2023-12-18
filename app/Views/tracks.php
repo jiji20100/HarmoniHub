@@ -56,36 +56,21 @@
     </style>
 </head>
 <body>
-<?php include '../app/Resources/layout/navbar.php'?>
 
 <div class="container">
     <div class="tracks-container">
         <h1>Mes Tracks</h1>
         <?php
-            require_once('../app/config/config.php');
-            try {
-                // Sélectionnez les fichiers depuis la table musics en utilisant la connexion définie dans config.php
-                $sql = "SELECT * FROM musics WHERE user_id = :user_id";
-                $stmt = $connexion->prepare($sql); // Utilisez prepare() au lieu de query()
-                $stmt->bindParam(":user_id", $_SESSION['user_id']); // Assurez-vous que le nom du paramètre correspond à celui dans la requête SQL
-                $stmt->execute(); // Exécutez la requête préparée
-
-                // Maintenant, vous pouvez récupérer les résultats
-                $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                // Affichez la liste des fichiers
-                foreach ($musics as $row) {
-                    $title = str_replace('_', ' ', $row['title']);
-                    echo '<div class="track">';
-                    echo '<h3>' . $title . '</h3>';
-                    echo '<audio id ="' . $row['title'] . '" controls>';
-                    echo '<source src="' . $row['file_path'] . '" type="audio/mpeg">';
-                    echo 'Votre navigateur ne supporte pas l\'élément audio.';
-                    echo '</audio>';
-                    echo '</div>';
-                }
-            } catch (PDOException $e) {
-                echo 'Erreur de base de données : ' . $e->getMessage();
+            // Affichez la liste des fichiers
+            foreach ($musics as $row) {
+                $title = str_replace('_', ' ', $row['title']);
+                echo '<div class="track">';
+                echo '<h3>' . $title . '</h3>';
+                echo '<audio id ="' . $row['title'] . '" controls>';
+                echo '<source src="' . $row['file_path'] . '" type="audio/mpeg">';
+                echo 'Votre navigateur ne supporte pas l\'élément audio.';
+                echo '</audio>';
+                echo '</div>';
             }
         ?>
     </div>
@@ -106,18 +91,8 @@
             <label for="genre">Genre :</label>
             <select name="genre" id="genre">
                 <?php
-                    try {
-                        $sql = "SELECT * FROM genre";
-                        $stmt = $connexion->prepare($sql);
-                        $stmt->execute(); 
-                    
-                        $genres = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    
-                        foreach ($genres as $row) {
-                            echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</option>';
-                        }
-                    } catch (PDOException $e) {
-                        echo 'Erreur de base de données : ' . $e->getMessage();
+                    foreach ($genres as $row) {
+                        echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</option>';
                     }
                 ?>
             </select>
