@@ -3,6 +3,8 @@ namespace Controllers;
 
 use Source\Renderer;
 use Source\Database;
+use Source\MailConfig;
+use \PDO;
 
 class AuthController {
     public function index(): Renderer {
@@ -22,6 +24,10 @@ class AuthController {
 
     public function reset_password(): Renderer {
         return Renderer::make('Auth/reset_password');
+    }
+
+    public function make_reset_password(): Renderer {
+        return Renderer::make('Auth/make_reset_password');
     }
 
     private function isConnected(): void {
@@ -91,7 +97,7 @@ class AuthController {
         // Rediriger si déjà connecté
         if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
             header('Location: home.php');
-            exit;
+            exit();
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -150,6 +156,147 @@ class AuthController {
 
             // Gérer l'affichage des erreurs ici si nécessaire
         }
+    }
+
+    
+    public function send_reset_password(){
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            $email = $_POST['email_fo_reset'];
+
+            $erreurs = [];
+
+
+            // Validation des données
+            if (empty($email)) {
+                $erreurs[] = "vous devez entrer un email";
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $erreurs[] = "Format d'email invalide.";
+            }
+
+            if (empty($erreurs)) {
+                try {
+                    $connexion = Database::getConnection();
+
+                    // Vérifier si l'email est déjà utilisé
+                    $stmt = $connexion->prepare("SELECT * FROM users WHERE email = :email");
+                    $stmt->bindParam(':email', $email);
+                    $stmt->execute();
+
+                    if ($stmt->fetch()) {
+                        //ici il faut envoyer l'email
+                        $token = bin2hex(random_bytes(16));
+                        $token_hash = hash("sha256", $token);
+                        $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
+                        
+                        $sql = "UPDATE users SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
+                        $stmt = $connexion->prepare($sql);
+                        
+                        // Bind the parameters with data types
+                        $stmt->bindParam(1, $token_hash, \PDO::PARAM_STR);
+                        $stmt->bindParam(2, $expiry, \PDO::PARAM_STR);
+                        $stmt->bindParam(3, $email, \PDO::PARAM_STR);
+                        
+                        $stmt->execute();
+                        echo "the token was set\n";
+                        echo "tokenhash : " .$token_hash;
+                        echo "token : " .$token;
+
+                        if($stmt){
+                            $emailConfig = new MailConfig();
+
+                            $emailConfig->mailer->Subject = "@no reply reset you password";
+                            $emailConfig->mailer->addAddress($email);
+
+                            $emailConfig->mailer->Body = <<<END
+
+                            Click <a href="http://epita-hilbertchryshostome.13h37.io/make_reset_password?token=$token">HERE</a> to reset your password.
+
+                            END;
+                            try{
+                                $emailConfig->mailer->send();
+                            }catch (Exception $e){
+                                echo "le message n'a pas ete envoye error : {$email->ErrorInfo}";
+                            }     
+                        }
+                        echo "Please check the massage in your email";
+
+                    } else {
+                       $erreurs[] = "Cette adress mail n'existe pas";
+                        exit;
+                    }
+                } catch (PDOException $e) {
+                    $erreurs[] = "Erreur lors de l'inscription : " . $e->getMessage();
+                }
+                exit();
+                // session_destroy();
+            }
+
+        }
+    }
+
+    public function make_reset_password_process(): Renderer {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $connexion = Database::getConnection();
+        
+            $erreurs = [];
+            $password = $_POST['password'];
+            $password_confirmation = $_POST['password_confirmation'];
+        
+            // Vérifie tous les champs
+            if (empty($password_confirmation) || empty($password)) {
+                $erreurs[] = "Tous les champs sont obligatoires.";
+            }
+        
+            if (!($password == $password_confirmation)) {
+                $erreurs[] = "Tous les champs sont obligatoires.";
+                die("Tous les champs sont obligatoires.");
+            }
+        
+            $token = $_POST["token"];
+            $token_hash = hash("sha256", $token);
+        
+            $sql = "SELECT * FROM users
+                    WHERE reset_token_hash = ?";
+        
+            $stmt = $connexion->prepare($sql);
+            $stmt->bindParam(1, $token_hash, \PDO::PARAM_STR);
+            $stmt->execute();
+        
+            // Fetch the result as an associative array
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            if ($user === false) {
+                die("Token not found");
+            }
+        
+            if (strtotime($user["reset_token_expires_at"]) <= time()) {
+                die("Token has expired");
+            }
+        
+            $password_hash = password_hash($password_confirmation, PASSWORD_DEFAULT);
+        
+            $sql = "UPDATE users
+            SET password = ?,
+                reset_token_hash = NULL,
+                reset_token_expires_at = NULL
+            WHERE id = ?";
+        
+            $stmt = $connexion->prepare($sql);
+        
+            // Bind the parameters using bindParam
+            $stmt->bindParam(1, $password_hash, \PDO::PARAM_STR);
+            $stmt->bindParam(2, $user["id"], \PDO::PARAM_INT); // Assuming id is an integer
+        
+            $stmt->execute();
+        
+            echo "Password updated. You can now login.";
+        }
+        return Renderer::make('Auth/login');
     }
 }
 ?>

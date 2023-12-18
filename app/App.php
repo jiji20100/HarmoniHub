@@ -11,7 +11,7 @@ class App {
 
     private Router $router;
     private string $request_uri;
-    private string $request_method; 
+    private string $request_method;
 
     public function __construct(Router $router, string $request_uri, string $request_method)
     {
@@ -30,7 +30,13 @@ class App {
 
         $this->router->set('/register', ['Controllers\AuthController', 'register']);
         $this->router->post('/register', ['Controllers\AuthController', 'register_process']);
+
         $this->router->set('/reset_password', ['Controllers\AuthController', 'reset_password']);
+        $this->router->post('/reset_password', ['Controllers\AuthController', 'send_reset_password']);
+        $this->router->set('/make_reset_password', ['Controllers\AuthController', 'make_reset_password']);
+        $this->router->post('/make_reset_password', ['Controllers\AuthController', 'make_reset_password_process']);
+
+
         $this->router->set('/logout', ['Controllers\AuthController', 'logout']);
 
         $this->router->set('/home', ['Controllers\HomeController', 'index']);
@@ -44,7 +50,7 @@ class App {
             echo $this->router->handleRequest($this->request_uri, $this->request_method);
         } catch (RouteNotFoundException $e) {
             header("HTTP/2.0 404 Not Found");
-            echo Renderer::make('Err/404');
+            echo Renderer::make('Errors/404');
         }
     }
 

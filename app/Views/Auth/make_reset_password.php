@@ -1,3 +1,41 @@
+<?php
+    namespace Controllers;
+
+    use Source\Database;
+    use Source\Renderer;
+    use \PDO;
+    
+    $token = $_GET["token"];
+    echo $token;
+    $token_hash = hash("sha256", $token);
+    echo $token_hash;
+    
+    $connexion = Database::getConnection();
+    
+    $sql = "SELECT * FROM users
+            WHERE reset_token_hash = ?";
+    
+    $stmt = $connexion->prepare($sql);
+    
+    // Bind the parameter using bindParam
+    $stmt->bindParam(1, $token_hash, \PDO::PARAM_STR);
+    
+    $stmt->execute();
+    
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($result === false) {
+        die("Token not found");
+    }
+    
+    if (strtotime($result["reset_token_expires_at"]) <= time()) {
+        die("Token has expired");
+    }
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,12 +97,15 @@
 <body>
     <div class="container">
         <h2>Réinitialisation du Mot de Passe</h2>
-        <form action="reset_password" method="post">
-            <label for="email_fo_reset">enter votre email : </label>
-            <input type="email" id="email_fo_reset" name="email_fo_reset" required>
+        <form action="make_reset_password" method="post">
+            <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
 
-            <!-- <label for="password_confirmation">Confirmer le Mot de Passe :</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" required> -->
+
+            <label for="password">Nouveau Mot de Passe :</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="password_confirmation">Confirmer le Mot de Passe :</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" required>
 
             <button type="submit">Réinitialiser le Mot de Passe</button>
         </form>
