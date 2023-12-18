@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/4f2c3df144.js" crossorigin="anonymous"></script>
 </head>
 <style>
@@ -31,8 +30,6 @@
 </style>
 
 <body>
-    <?php //$user: array(1) { [0]=> array(7) { ["id"]=> int(1) ["surname"]=> string(6) "samsam" ["name"]=> string(3) "del" ["artist_name"]=> string(7) "Unknown" ["email"]=> string(24) "samuel.deliens@gmail.com" ["password"]=> string(60) "$2y$10$5U3prZxFC62jZlI5jUSJzO9u0zi8q2lanZqkk0d9EPz2mnf35idwu" ["created_at"]=> string(19) "2023-12-17 21:25:58" } }
-    ?>
     <section>
         <div class="container">
             <div class="container">

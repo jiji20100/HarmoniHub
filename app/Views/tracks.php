@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .container {
             display: flex;
@@ -104,73 +103,73 @@
         }
 
         
-    .update-form {
-        max-width: 500px;
-        margin: 20px auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
+        .update-form {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
 
-    .update-form label {
-        display: block;
-        margin-bottom: 5px;
-    }
+        .update-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-    .update-form input[type="text"],
-    .update-form select,
-    .update-form input[type="file"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
+        .update-form input[type="text"],
+        .update-form select,
+        .update-form input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
 
-    .update-form button {
-        padding: 10px 15px;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+        .update-form button {
+            padding: 10px 15px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-    .update-form button:hover {
-        background-color: #0056b3;
-    }
-    .modal {
-        display: none; /* Caché par défaut */
-        position: fixed; /* Reste en place même lors du défilement de la page */
-        z-index: 1000; /* S'affiche au-dessus des autres éléments */
-        left: 0;
-        top: 0;
-        width: 100%; /* Largeur complète */
-        height: 100%; /* Hauteur complète */
-        overflow: auto; /* Permet le défilement si nécessaire */
-        background-color: rgba(0, 0, 0, 0.4); /* Couleur de fond semi-transparente */
-    }
+        .update-form button:hover {
+            background-color: #0056b3;
+        }
+        .modal {
+            display: none; /* Caché par défaut */
+            position: fixed; /* Reste en place même lors du défilement de la page */
+            z-index: 1000; /* S'affiche au-dessus des autres éléments */
+            left: 0;
+            top: 0;
+            width: 100%; /* Largeur complète */
+            height: 100%; /* Hauteur complète */
+            overflow: auto; /* Permet le défilement si nécessaire */
+            background-color: rgba(0, 0, 0, 0.4); /* Couleur de fond semi-transparente */
+        }
 
-    .modal-content {
-        margin: 15% auto; /* 15% du haut de l'écran */
-        width: 30%;
-    }
-    .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    margin-right: 0.7em;
-    margin-top: 0.3em;
-}
+        .modal-content {
+            margin: 15% auto; /* 15% du haut de l'écran */
+            width: 30%;
+        }
+        .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        margin-right: 0.7em;
+        margin-top: 0.3em;
+        }
 
-    .close:hover,
-    .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>

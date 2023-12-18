@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/4f2c3df144.js" crossorigin="anonymous"></script>
 </head>
     <style>
