@@ -24,7 +24,18 @@ CREATE TABLE IF NOT EXISTS musics (
     file_path VARCHAR(255) NOT NULL,
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     note INT(11) UNSIGNED,
+    private BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Création de la table des playlists
+CREATE TABLE IF NOT EXISTS playlists (
+    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(11) UNSIGNED NOT NULL,
+    music_id INT(11) UNSIGNED NOT NULL,
+    name VARCHAR(50) NOT NULL DEFAULT 'My playlist',
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
 );
 
 -- Création de la table des genres
@@ -68,6 +79,9 @@ CREATE TABLE IF NOT EXISTS messages (
     user_id INT(11) UNSIGNED,
     music_id INT(11) UNSIGNED,
     message TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
+);
 
 
 -- Insertion des genres
