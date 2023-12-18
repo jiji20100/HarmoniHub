@@ -75,6 +75,12 @@
                         <?= $_SESSION['error']; ?>
                         <?php unset($_SESSION['error']); ?>
                     </div>
+                <?php endif;
+                    if (isset($_SESSION['infos'])) : ?>
+                    <div class="alert alert-info">
+                        <?= $_SESSION['infos']; ?>
+                        <?php unset($_SESSION['infos']); ?>
+                    </div>
                 <?php endif; ?>
                 <div class="card text-light">
                     <div class="background"></div>
@@ -85,8 +91,8 @@
                             <!-- Formulaire de connexion avec fond blanc -->
                             <form action="/login" method="post" style="padding:10px">
                                 <div class="form-outline form-light mb-4">
-                                    <label for="email" class="form-label">Nom d'utilisateur</label>
-                                    <input type="text" name="email" id="email" class="form-control form-control-lg" required>
+                                    <label for="login" class="form-label">Nom d'utilisateur ou email</label>
+                                    <input type="text" name="login" id="login" class="form-control form-control-lg" required>
                                 </div>
 
                                 <div class="form-outline form-light mb-4">

@@ -24,17 +24,23 @@ class AuthController {
     public function login_process(): Renderer {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erreurs = [];
-            $email = $_POST['email'];
+            $login = $_POST['login'];
             $password = $_POST['password'];
 
             // Vérifie tous les champs
-            if (empty($email) || empty($password)) {
+            if (empty($login) || empty($password)) {
                 $erreurs[] = "Tous les champs sont obligatoires.";
             }
 
             if (empty($erreurs)) {
 
-                $user = User::getUserByEmail($email);
+                //check if its an email or username
+                if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+                    $user = User::getUserByEmail($login);
+                } else {
+                    $user = User::getUserByArtistName($login);
+                }
+
                 if ($user) {
                     if (password_verify($password, $user['password'])) {
                         $_SESSION['is_logged_in'] = true;
@@ -70,6 +76,7 @@ class AuthController {
             $passwordConfirmation = $_POST['password_confirmation'];
 
             $erreurs = [];
+            $infos = "";
 
             // Validation des données
             if (empty($surname) || empty($name) || empty($email) || empty($password)) {
@@ -91,9 +98,11 @@ class AuthController {
                 } else {
                     if (!$username) {
                         $username = $name . $surname;
+                        $infos = "Votre username est : " . $username;
                     }
                     if (User::getUserByArtistName($username)) {
                         $username = $username . time();
+                        $infos = "Votre username est : " . $username;
                     }
 
                     $user = User::createUser([
@@ -109,6 +118,7 @@ class AuthController {
                     } else {
                         $_SESSION['success'] = "Bravo, vous êtes maintenant inscris !";
                         $_SESSION['user_id'] = $user['id'];
+                        $_SESSION['infos'] = $infos;
                         unset($_SESSION['errors']);
                         header('Location: /login');
                         exit();
