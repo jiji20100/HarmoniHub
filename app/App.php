@@ -36,7 +36,7 @@ class App {
         $this->router->post('/register', ['Controllers\AuthController', 'register_process'])->middleware(['Source\Session', 'redirectIfConnected']);
 
         $this->router->get('/reset_password', ['Controllers\AuthController', 'reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
-        $this->router->get('/logout', ['Controllers\AuthController', 'logout'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/logout', ['Controllers\AuthController', 'logout'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
 
         

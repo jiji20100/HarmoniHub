@@ -64,7 +64,7 @@
             <a href="/home">HarmoniHub</a>
         </div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="recherche.php">Rechercher</a></li>
+            <li><a href="/recherche">Rechercher</a></li>
             <li><a href="/track">Mes Tracks</a></li>
             <li><a href="/favorite">Mes Favoris</a></li>
             <li><a href="/profile">Mon Profil</a></li>
