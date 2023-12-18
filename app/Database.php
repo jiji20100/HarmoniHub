@@ -7,7 +7,8 @@ use PDO;
 use PDOException;
 
 class Database {
-    private static $instance = null;
+    protected static $instance = null;
+    protected static $table = null;
 
     private function __construct() {
         // Constructeur privé pour empêcher l'instanciation directe
@@ -32,6 +33,26 @@ class Database {
             }
         }
         return self::$instance;
+    }
+
+    public static function disconnect() {
+        self::$instance = null;
+    }
+
+    public static function getAll(): \PDOStatement {
+        try {
+            //TODO : récupérer la connexion à la base de données
+            //$connexion = self::getConnection();
+            $connexion = self::$instance;
+            $query = "SELECT * FROM " . self::$table;
+            $stmt = $connexion->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
     }
 }
 
