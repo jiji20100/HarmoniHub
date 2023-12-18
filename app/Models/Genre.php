@@ -8,7 +8,7 @@ class Genre extends Database {
     protected static $table = "genres";
 
     //TODO REMOVE CAUSE IT'S ALREADY IN DATABASE.PHP
-    public static function getGenres(): array {
+    public static function getAllGenres(): array {
         try {
             $query = "SELECT * FROM " . self::$table;
             $stmt = self::$instance->prepare($query);
