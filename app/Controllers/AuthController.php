@@ -55,6 +55,9 @@ class AuthController {
                     if (password_verify($password, $user['password'])) {
                         $_SESSION['is_logged_in'] = true;
                         $_SESSION['user_id'] = $user['id'];
+
+                        
+
                         $_SESSION['welcome_message'] = "Bienvenue " . $user['name'] . " " . $user['surname'] . " !";
                         unset($_SESSION['error']);
                         header('Location: /home');
@@ -161,18 +164,26 @@ class AuthController {
         $playlist = Playlist::createPlaylist("Library", $user['id']);
     }
 
-    public function logout()
+    public function logout() : Renderer
     {
-        $_SESSION = array(); // Efface les données de la session
+
+        $_SESSION = array();
         
-        if (ini_get("session.use_cookies")) { // Supprime le cookie de session s'il existe
+        if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
             );
         }
+        
         session_destroy();
+        
         header("Location: /");
         exit;
     }
@@ -231,10 +242,14 @@ class AuthController {
                             $emailConfig->mailer->addAddress($email);
 
                             $emailConfig->mailer->Body = <<<END
+                            <h1 style="color: #007bff;">Reset your HarmoniHub password</h1>
+                            <p> Click 
+                                <a href="$DOMAIN_NAME/make_reset_password?token=$token" style="color: #28a745; text-decoration: none; font-weight: bold;">
+                                    HERE
+                                </a> 
+                                to reset your password.
+                            </p>
                             
-                            <h1>Reset your HarmoniHub password <h1/>
-                            Click <a href="$DOMAIN_NAME/make_reset_password?token=$token">HERE</a> to reset your password.
-
                             END;
                             try{
                                 $emailConfig->mailer->send();
@@ -243,17 +258,18 @@ class AuthController {
                                 $erreurs[] = "le message n'a pas ete envoye error : {$email->ErrorInfo}";
                             }     
                         }
-                        echo "Please check the massage in your email";
+                        echo "<p>Please check the message in your email<p/>";
 
                     } else {
                        $erreurs[] = "Cette adress mail n'existe pas";
-                        exit;
+                        exit();
                     }
                 } catch (PDOException $e) {
                     $erreurs[] = "Erreur lors de l'inscription : " . $e->getMessage();
                 }
+
+                session_destroy();
                 exit();
-                // session_destroy();
             }
 
         }

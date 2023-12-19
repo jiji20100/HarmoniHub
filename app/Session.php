@@ -23,7 +23,7 @@ class Session
     public static function redirectIfNotConnected(): void
     {
         if (!self::isConnected()) {
-            header('Location: /');
+            // header('Location: /');
             exit;
         }
     }
@@ -31,7 +31,7 @@ class Session
     public static function redirectIfConnected(): void
     {
         if (self::isConnected()) {
-            header('Location: /home');
+            // header('Location: /home');
             exit;
         }
     }

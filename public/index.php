@@ -33,13 +33,14 @@ function isAjaxRequest() {
         <link rel="stylesheet" href="app.css">
     </head>
     <?php
-    $excludeNavbarOn = ['/login', '/register', '/reset_password', '/', '/make_reset_password'];
-    $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    if (!isAjaxRequest() && !in_array($currentPath, $excludeNavbarOn)) 
-    {
-        include '../app/Resources/layout/navbar.php'; 
-        include '../app/Resources/layout/notifs.php';
-    }
-    $app->run(); 
+        $excludeNavbarOn = ['/login', '/register', '/reset_password', '/', '/make_reset_password'];
+        $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        if (!isAjaxRequest() && !in_array($currentPath, $excludeNavbarOn)) 
+        {
+            include '../app/Resources/layout/navbar.php'; 
+            include '../app/Resources/layout/notifs.php';
+        }
+        $app->run(); 
     ?>
 </html>

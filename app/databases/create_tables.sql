@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 
---pour la renitialisation du mot de passe
+-- pour la renitialisation du mot de passe
 ALTER TABLE users
   ADD `reset_token_hash` VARCHAR(64) NULL DEFAULT NULL,
   ADD `reset_token_expires_at` DATETIME NULL DEFAULT NULL,
