@@ -4,6 +4,8 @@ namespace Controllers;
 
 use Source\Renderer;
 use Models\User;
+use Models\Music;
+use Models\Genre;
 
 class AdminController
 {
@@ -18,7 +20,8 @@ class AdminController
     }
     public function admin_tracks_index(): Renderer
     {
-        return Renderer::make('Admin/tracks');
+        $tracks = Music::getAllTracks();
+        return Renderer::make('Admin/tracks', ['tracks' => $tracks]);
     }
 
     public function show_update_form_user() {
@@ -96,6 +99,90 @@ class AdminController
             exit;
         }
     }
+
+    public function update_track_admin() {
+        if (isset($_POST['id'])) {
+            $trackName = $_POST['track_name'] ?? ''; 
+            $genreId = $_POST['genre'] ?? ''; 
+            $featuring = $_POST['featuring'] ?? '';
+            try {
+                $result = Music::update_track($trackName, $genreId, $featuring, $_POST['id']);
+                $_SESSION['track_admin_message'] = "Le track " . $_POST['track_name'] . " a bien été modifié";
+                $_SESSION['track_admin_message_type'] = 'success';
+            } catch (PDOException $e) {
+                $_SESSION['track_admin_message'] = 'Erreur de base de données : ' . $e->getMessage();
+                $_SESSION['track_admin_message_type'] = 'danger';
+            }
+        }
+        header('Location: /admin_tracks');
+        exit;
+    }
+
+    public function delete_track_admin() {
+        if (isset($_POST['id'])) {
+            $trackId = $_POST['id'];
+            $file_path = Music::getPath();
+            $file_full_path = $_SERVER['DOCUMENT_ROOT'] . $file_path[0]["file_path"];
+            // Étape 2 : Supprimer le fichier s'il existe
+            if (file_exists($file_full_path)) {
+                unlink($file_full_path);
+            }
+            if (Music::delete_track($trackId)) {
+                $_SESSION['track_admin_message'] = 'Track supprimé avec succès.';
+                $_SESSION['track_admin_message_type'] = 'success';
+            } else {
+                $_SESSION['track_admin_message'] = 'Erreur lors de la suppression du track.';
+                $_SESSION['track_admin_message_type'] = 'danger';
+            }
+
+            header('Location: /admin_tracks');
+            exit;
+        }
+    }
+
+    public function show_update_form_track_admin() {
+        $formHtml = '';
+        if (isset($_POST['id'])) {
+            $trackId = $_POST['id'];
+            try {
+                $track = Music::getTrackById($trackId);
+                $genres = Genre::getAllGenres();
+                if ($track) {
+                    $formHtml =  '<form action="/update_track" method="POST" enctype="multipart/form-data" class="update-form">';
+                    $formHtml .= '<input type="hidden" name="id" value="' . htmlspecialchars($track['id']) . '">';
+
+                    $formHtml .= '<label for="track_name">Titre :</label>';
+                    $formHtml .= '<input type="text" name="track_name" id="track_name" value="' . htmlspecialchars($track['title']) . '" required>';
+
+                    $formHtml .= '<label for="featuring">Featuring :</label>';
+                    $formHtml .= '<input type="text" name="featuring" id="featuring" value="' . htmlspecialchars($track['featuring']) . '">';
+
+                    $formHtml .= '<label for="genre">Genre :</label>';
+                    $formHtml .= '<select name="genre" id="genre">';
+                    foreach ($genres as $genre) {
+                        $selected = ($genre['id'] == $track['genre']) ? ' selected' : '';
+                        $formHtml .= '<option value="' . htmlspecialchars($genre['id']) . '"' . $selected . '>' . htmlspecialchars($genre['name']) . '</option>';
+                    }
+                    $formHtml .= '</select>';
+
+                    $formHtml .= '<label for="track_file">Changer le fichier MP3 :</label>';
+                    $formHtml .= '<input type="file" name="track_file" id="track_file">';
+
+                    $formHtml .= '<button type="submit">Mettre à jour</button>';
+                    $formHtml .= '</form>';
+                } else {
+                    $formHtml .= 'Track non trouvé.';
+                }
+            } catch (Exception $e) {
+                $formHtml .= 'Erreur : ' . $e->getMessage();
+            }
+        } else {
+            $formHtml .= 'Aucun ID de track spécifié.';
+        }
+
+        return $formHtml;
+    }
+
 }
 
 ?>

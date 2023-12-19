@@ -8,7 +8,7 @@ class Music extends Database {
     protected static $table = "musics";
 
     //TODO REMOVE CAUSE IT'S ALREADY IN DATABASE.PHP
-    public static function getTracks(): array {
+    public static function getAllTracks(): array {
         try {
             $query = "SELECT * FROM " . self::$table;
             $stmt = self::$instance->prepare($query);
