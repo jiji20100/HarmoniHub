@@ -46,7 +46,7 @@
                     <div class="card mb-4 mb-xl-0">
                         <div class="card-header">Profile Picture</div>
                         <div class="card-body text-center">
-                            <img src="https://www.gravatar.com/avatar/<?php echo md5($user[0]['email']); ?>?s=200" alt="Avatar" class="avatar">
+                            <img src="https://www.gravatar.com/avatar/<?php echo md5($user['email']); ?>?s=200" alt="Avatar" class="avatar">
                             <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
                             <button class="btn btn-primary" type="button">
                                 Edit
@@ -62,25 +62,25 @@
                             <form action="/profile/edit_process" method="POST">
                                 <div class="mb-3 form-group">
                                     <label class="small mb-1" for="username">Username (how your name will appear to other users on the site)</label>
-                                    <input class="form-control <?php if(isset($errors["username"])) { ?> is-invalid <?php } ?> " name="username" id="username" type="text" placeholder="Enter your username" value="<?php echo $user[0]['artist_name']; ?>">
+                                    <input class="form-control <?php if(isset($errors["username"])) { ?> is-invalid <?php } ?> " name="username" id="username" type="text" placeholder="Enter your username" value="<?php echo $user['artist_name']; ?>">
                                     <span class="invalid-feedback"><?php echo $errors["artist_name"] ?? ""; ?></span>
                                 </div>
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-6 form-group">
                                         <label class="small mb-1" for="firstname">First name</label>
-                                        <input class="form-control <?php if(isset($errors["firstname"])) { ?> is-invalid <?php } ?> " name="firstname" id="firstname" type="text" placeholder="Enter your first name" value="<?php echo $user[0]['name']; ?>">
+                                        <input class="form-control <?php if(isset($errors["firstname"])) { ?> is-invalid <?php } ?> " name="firstname" id="firstname" type="text" placeholder="Enter your first name" value="<?php echo $user['name']; ?>">
                                         <span class="invalid-feedback"><?php echo $errors["firstname"] ?? ""; ?></span>
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label class="small mb-1" for="lastname">Last name</label>
-                                        <input class="form-control <?php if(isset($errors["lastname"])) { ?> is-invalid <?php } ?> " name="lastname" id="lastname" type="text" placeholder="Enter your last name" value="<?php echo $user[0]['surname']; ?>">
+                                        <input class="form-control <?php if(isset($errors["lastname"])) { ?> is-invalid <?php } ?> " name="lastname" id="lastname" type="text" placeholder="Enter your last name" value="<?php echo $user['surname']; ?>">
                                         <span class="invalid-feedback"><?php echo $errors["lastname"] ?? ""; ?></span>
                                     </div>
                                 </div>
                                 <!-- Form Group (email address)-->
                                 <div class="mb-3 form-group">
                                     <label class="small mb-1" for="email">Email address</label>
-                                    <input class="form-control <?php if(isset($errors["email"])) { ?> is-invalid <?php } ?> " name="email" id="email" type="email" placeholder="Enter your email address" value="<?php echo $user[0]['email']; ?>">
+                                    <input class="form-control <?php if(isset($errors["email"])) { ?> is-invalid <?php } ?> " name="email" id="email" type="email" placeholder="Enter your email address" value="<?php echo $user['email']; ?>">
                                     <span class="invalid-feedback"><?php echo $errors["email"] ?? ""; ?></span>
                                 </div>
                                 <!-- Save changes button-->

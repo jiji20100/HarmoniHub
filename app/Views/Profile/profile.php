@@ -48,8 +48,8 @@
                                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
                                 <img src="https://www.gravatar.com/avatar/<?php echo md5($user[0]['email']); ?>?s=200"
                                     alt="Avatar" class="img-fluid my-5 avatar" style="width: 150px;" />
-                                <h5><?php echo $user[0]['name'] . ' ' . $user[0]['surname']; ?></h5>
-                                <p><?php echo $user[0]['artist_name']; ?></p>
+                                <h5><?php echo $user['name'] . ' ' . $user['surname']; ?></h5>
+                                <p><?php echo $user['artist_name']; ?></p>
                                 <i class="far fa-edit mb-8" onclick="window.location.href='/profile/edit'" style="cursor:pointer"></i>
                             </div>
                             <div class="col-md-8">
@@ -59,7 +59,7 @@
                                     <div class="row pt-1">
                                         <div class="col-6 mb-3">
                                             <h6>Email</h6>
-                                            <p class="text-muted"><?php echo $user[0]['email']; ?></p>
+                                            <p class="text-muted"><?php echo $user['email']; ?></p>
                                         </div>
                                         <!-- Add more information as needed -->
                                     </div>
@@ -67,14 +67,14 @@
                                     <hr class="mt-0 mb-4">
                                     <div class="row pt-1">
                                         <div class="col-12 mb-3">
-                                            <p class="text-muted"><?php echo $user[0]['password']; ?></p>
+                                            <p class="text-muted"><?php echo $user['password']; ?></p>
                                         </div>
                                     </div>
                                     <h6>Date de création</h6>
                                     <hr class="mt-0 mb-4">
                                     <div class="row pt-1">
                                         <div class="col-12 mb-3">
-                                            <p class="text-muted"><?php echo $user[0]['created_at']; ?></p>
+                                            <p class="text-muted"><?php echo $user['created_at']; ?></p>
                                         </div>
                                     </div>
                                     <h6>Musics Upload</h6>
