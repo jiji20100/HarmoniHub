@@ -1,62 +1,110 @@
+<!-- home.php -->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Votre Site de Streaming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>HarmoniHub - Accueil</title>
     <style>
-        
-        .welcome-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            border: 2px solid #4CAF50; 
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            background-color: white; 
-            max-width: 600px; 
-            border-radius: 15px; 
-        }
-
-        .welcome-message h2 {
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-
-        .welcome-message p {
-            color: #555;
-            font-size: 18px;
-        }
-
-        .welcome-message button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        /* Ajoutez votre propre style CSS ici si nécessaire */
     </style>
 </head>
 <body>
-    <?php if (isset($_SESSION['welcome_message'])): ?>
-        <div class="welcome-message">
-            <h2>Bienvenue sur votre site de streaming !</h2>
-            <p>Profitez d'une expérience incroyable avec notre vaste collection de musiques. <br><br> Sur celui-ci, vous avez la possibilité d'ajouter vos propres sons et de les écouter. Vous pouvez aussi écouter ceux des autres en les recherchant dans la barre de recherche.</p>
-            <button onclick="hideWelcomeMessage()">Ok</button>
+
+<div class="container mt-5">
+    <!-- Affichage des 10 dernières pistes -->
+    <div class="section">
+        <h2 class="mb-4">Les 10 Dernières Pistes</h2>
+        <div class="row">
+            <?php
+            try {
+                $lastTracks = \Models\Music::getLastTracks();
+                foreach ($lastTracks as $track) {
+                    echo '<div class="col-md-6 col-lg-4 mb-4">';
+                    echo '<div class="card">';
+                    echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
+                    echo '<div class="card-body">';
+                    echo '<h5 class="card-title">' . htmlspecialchars($track['title']) . '</h5>';
+                    echo '<a href="music_details?id=' . $track['id'] . '" class="btn btn-primary">Détails</a>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } catch (\PDOException $e) {
+                echo 'Erreur de base de données : ' . $e->getMessage();
+            }
+            ?>
         </div>
-    <?php unset($_SESSION['welcome_message']); endif; ?>
+    </div>
+
+    <!-- Affichage des 10 meilleures pistes notées -->
+    <div class="section">
+        <h2 class="mb-4">Les 10 Meilleures Pistes Notées</h2>
+        <div class="row">
+            <?php
+            try {
+                $bestTracks = \Models\Music::getBestTracks();
+                foreach ($bestTracks as $track) {
+                    echo '<div class="col-md-6 col-lg-4 mb-4">';
+                    echo '<div class="card">';
+                    echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
+                    echo '<div class="card-body">';
+                    echo '<h5 class="card-title">' . htmlspecialchars($track['title']) . '</h5>';
+                    echo '<a href="music_details?id=' . $track['id'] . '" class="btn btn-primary">Détails</a>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } catch (\PDOException $e) {
+                echo 'Erreur de base de données : ' . $e->getMessage();
+            }
+            ?>
+        </div>
+    </div>
+
+    <!-- Affichage des 10 pistes par genre -->
+    <div class="section">
+        <h2 class="mb-4">Les 10 Pistes par Genre</h2>
+        <?php
+        try {
+            // Récupérez tous les genres
+            $genres = \Models\Genre::getAllGenres();
+
+            // Affichez les pistes pour chaque genre
+            foreach ($genres as $genre) {
+                // Récupérez les pistes pour le genre actuel
+                $genreTracks = \Models\Music::getTracksByGenreId($genre['id']);
+
+                // Affichez le genre seulement s'il y a des musiques associées
+                if (!empty($genreTracks)) {
+                    echo '<div class="genre-tracks mb-4">';
+                    echo '<h3>' . htmlspecialchars($genre['name']) . '</h3>';
+                    echo '<div class="row">';
+                    foreach ($genreTracks as $track) {
+                        echo '<div class="col-md-6 col-lg-4 mb-4">';
+                        echo '<div class="card">';
+                        echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
+                        echo '<div class="card-body">';
+                        echo '<h5 class="card-title">' . htmlspecialchars($track['title']) . '</h5>';
+                        echo '<a href="music_details?id=' . $track['id'] . '" class="btn btn-primary">Détails</a>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    echo '</div>';
+                    echo '</div>';
+                }
+            }
+        } catch (\PDOException $e) {
+            echo 'Erreur de base de données : ' . $e->getMessage();
+        }
+        ?>
+    </div>
+</div>
+
+
+
 </body>
 </html>
-
-<script>
-    function hideWelcomeMessage() {
-        document.querySelector('.welcome-message').style.display = 'none';
-    }
-</script>
-    

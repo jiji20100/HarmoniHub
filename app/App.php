@@ -52,6 +52,8 @@ class App {
         $this->router->post('/show_update_form_track', ['Controllers\TrackController', 'show_update_form_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/update_track', ['Controllers\TrackController', 'update'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/delete_track', ['Controllers\TrackController', 'delete_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        
+        $this->router->get("/music_details", ['Controllers\TrackController', 'show_details'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/profile', ['Controllers\ProfileController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->get('/profile/edit', ['Controllers\ProfileController', 'edit'])->middleware(['Source\Session', 'redirectIfNotConnected']);
@@ -61,12 +63,11 @@ class App {
         $this->router->post('/addFavorite', ['Controllers\FavorisController', 'addFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/removeFavorite', ['Controllers\FavorisController', 'removeFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
     
-        $this->router->get('/rechercher', ['Controllers\SearchController', 'search'])
-        ->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->get('/rechercher', ['Controllers\SearchController', 'search'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
-        $this->router->get('/search-form', ['Controllers\SearchController', 'showSearchForm'])
-        ->middleware(['Source\Session', 'redirectIfNotConnected']);
-    
+        $this->router->get('/search-form', ['Controllers\SearchController', 'showSearchForm'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+
     }
 
     public function run()
