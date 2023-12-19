@@ -79,6 +79,8 @@ class App {
 
         $this->router->get('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         
+        $this->router->get('/notifs', ['Controllers\NotifController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
         $this->router->get("/music_details", ['Controllers\TrackController', 'show_details'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post("/show_share_modal", ['Controllers\TrackController', 'show_share_modal'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post("/share_track", ['Controllers\TrackController', 'share_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);

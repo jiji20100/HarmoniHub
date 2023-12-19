@@ -129,6 +129,7 @@
                 <li><a href="/search-form">Rechercher</a></li>
                 <li><a href="/track">Mes Tracks</a></li>
                 <li><a href="/favorite">Mes Favoris</a></li>
+                <li><a href="/notifs">Notifs</a></li>
                 <li><a href="/profile">Mon Profil</a></li>
                 <li><form action="/logout" method="POST" style="margin: 0"><button class="logout-button">Se déconnecter</button></form></li>
             </ul>

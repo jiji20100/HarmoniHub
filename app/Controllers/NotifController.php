@@ -4,10 +4,17 @@ namespace Controllers;
 
 use Source\Renderer;
 use Models\Message;
-use Models\User;
+use Models\Music;
 
 class NotifController {
     public function index(): Renderer {
+        $messages = Message::getMessageByUserId($_SESSION['user_id']);
+
+        for ($i = 0; $i < count($messages); $i++) {
+            $messages[$i]['music_id'] = Music::getTrackById($messages[$i]['music_id']);
+        }
+
+        return Renderer::make('Notifs/notifs', ['messages' => $messages]);
     }
 
     public function check_new_messages(): string {
