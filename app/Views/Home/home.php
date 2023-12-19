@@ -22,7 +22,7 @@
             try {
                 $lastTracks = \Models\Music::getLastTracks();
                 foreach ($lastTracks as $track) {
-                    echo '<div class="col-md-6 col-lg-4 mb-4">';
+                    echo '<div class="col-md-6 col-lg-2 mb-4">';
                     echo '<div class="card">';
                     echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
                     echo '<div class="card-body">';
@@ -47,7 +47,7 @@
             try {
                 $bestTracks = \Models\Music::getBestTracks();
                 foreach ($bestTracks as $track) {
-                    echo '<div class="col-md-6 col-lg-4 mb-4">';
+                    echo '<div class="col-md-6 col-lg-2 mb-4">';
                     echo '<div class="card">';
                     echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
                     echo '<div class="card-body">';
@@ -80,21 +80,21 @@
                 // Affichez le genre seulement s'il y a des musiques associées
                 if (!empty($genreTracks)) {
                     echo '<div class="genre-tracks mb-4">';
-                    echo '<h3>' . htmlspecialchars($genre['name']) . '</h3>';
-                    echo '<div class="row">';
-                    foreach ($genreTracks as $track) {
-                        echo '<div class="col-md-6 col-lg-4 mb-4">';
-                        echo '<div class="card">';
-                        echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
-                        echo '<div class="card-body">';
-                        echo '<h5 class="card-title">' . htmlspecialchars($track['title']) . '</h5>';
-                        echo '<a href="music_details?id=' . $track['id'] . '" class="btn btn-primary">Détails</a>';
+                        echo '<h3>' . htmlspecialchars($genre['name']) . '</h3>';
+                        echo '<div class="row">';
+                        foreach ($genreTracks as $track) {
+                            echo '<div class="col-md-4 col-lg-2 mb-4">';
+                            echo '<div class="card h-100">';
+                            echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
+                            echo '<div class="card-body">';
+                            echo '<h5 class="card-title">' . htmlspecialchars($track['title']) . '</h5>';
+                            echo '<a href="music_details?id=' . $track['id'] . '" class="btn btn-primary">Détails</a>';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
                         echo '</div>';
                         echo '</div>';
-                        echo '</div>';
-                    }
-                    echo '</div>';
-                    echo '</div>';
                 }
             }
         } catch (\PDOException $e) {

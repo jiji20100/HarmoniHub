@@ -28,7 +28,7 @@ class Favorite extends Database {
 
         return $stmt->fetchColumn() > 0;
     }
-    
+
     public static function getFavoritesByUserId($userId) {
         try {
             // Sélectionner les colonnes nécessaires des deux tables en utilisant une jointure

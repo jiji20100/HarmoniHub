@@ -6,9 +6,9 @@
     use \PDO;
     
     $token = $_GET["token"];
-    echo $token;
+    // echo $token;
     $token_hash = hash("sha256", $token);
-    echo $token_hash;
+    // echo $token_hash;
     
     $connexion = Database::getConnection();
     

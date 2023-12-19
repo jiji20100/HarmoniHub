@@ -388,14 +388,14 @@
                     echo htmlspecialchars(json_encode($playlist)); 
                     ?>)">
                     <div class="card l-bg-blue-dark">
-                        <h3><?php echo htmlspecialchars($playlist_name); ?></h3>
+                        <h3 style="margin:4%"><?php echo htmlspecialchars($playlist_name); ?></h3>
                         <div class="mb-4">
-                            <h5 class="card-title mb-0">Playlist</h5>
+                            <h5 style="margin:4%" class="card-title mb-0">Playlist</h5>
                         </div>
                         <div class="row align-items-center mb-2 d-flex">
                             <div class="col-8">
                                 <h2 class="d-flex align-items-center mb-0">
-                                    <span class="mr-2"><?php echo count($playlist); ?></span>
+                                    <span style="margin-left:10%" class="mr-2"><?php echo count($playlist); ?></span>
                                 </h2>
                             </div>
                         </div>
