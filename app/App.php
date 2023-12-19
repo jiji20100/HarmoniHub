@@ -17,6 +17,7 @@ class App {
 
     public function __construct(Router $router, string $request_uri, string $request_method)
     {
+        session_start();
         $this->router = $router;
         $this->request_uri = $request_uri;
         $this->request_method = $request_method; 
@@ -75,8 +76,6 @@ class App {
 
     public function run()
     {
-        session_start();
-
         try {
             echo $this->router->handleRequest($this->request_uri, $this->request_method);
         } catch (RouteNotFoundException $e) {
