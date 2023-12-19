@@ -9,10 +9,8 @@ class Favorite extends Database {
 
     public static function addFavorite($userId, $trackId) {
         try {
-            $sql = "INSERT INTO favorites (user_id, track_id) VALUES (:userId, :trackId)";
+            $sql = "INSERT INTO favorites (user_id, music_id) VALUES ($userId, $trackId)";
             $stmt = self::$instance->prepare($sql);
-            $stmt->bindParam(":userId", $userId);
-            $stmt->bindParam(":trackId", $trackId);
             $stmt->execute();
             return true;
         } catch (\PDOException $e) {
@@ -20,7 +18,17 @@ class Favorite extends Database {
             throw $e;
         }
     }
+    
+    public static function isFavorite($userId, $trackId) {
+        $sql = "SELECT COUNT(*) FROM favorites WHERE user_id = :userId AND track_id = :trackId";
+        $stmt = self::$instance->prepare($sql);
+        $stmt->bindParam(":userId", $userId);
+        $stmt->bindParam(":trackId", $trackId);
+        $stmt->execute();
 
+        return $stmt->fetchColumn() > 0;
+    }
+    
     public static function getFavoritesByUserId($userId) {
         try {
             // Sélectionner les colonnes nécessaires des deux tables en utilisant une jointure

@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS messages (
     music_id INT(11) UNSIGNED,
     message TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (from) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (from_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
 );
 

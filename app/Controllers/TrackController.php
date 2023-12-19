@@ -6,6 +6,7 @@ use PDOException;
 use Source\Renderer;
 use Source\Database;
 use Models\Music;
+use Models\Favorite;
 use Models\Playlist;
 use Models\User;
 use Models\Genre;
@@ -140,14 +141,16 @@ class TrackController {
             exit;
         }
     }
+    
 
-    public function add_favorite() {
+    public function add_to_library() {
         if (isset($_POST['music_id'])) {
             $userId = $_SESSION['user_id'];
             $trackId = $_POST['music_id'];
             try {
-                $result = Music::add_favorite($userId, $trackId);
-                $_SESSION['track_message'] = 'Track ajouté aux favoris.';
+                $playlist = Playlist::getPlaylistByNames("Library", $_SESSION['user_id']);
+                $result = Playlist::addMusicToPlaylist($playlist[0]['id'], $trackId);
+                $_SESSION['track_message'] = 'Track ajouté à la bibliothèque.';
                 $_SESSION['track_message_type'] = 'success';
             } catch (PDOException $e) {
                 $_SESSION['track_message'] = 'Erreur de base de données : ' . $e->getMessage();

@@ -42,7 +42,17 @@ class App {
 
         $this->router->post('/logout', ['Controllers\AuthController', 'logout'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
+                
 
+        $this->router->get('/notifs/check_new_messages', ['Controllers\NotifController', 'check_new_messages'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->get('/notifs/get_all_messages', ['Controllers\NotifController', 'get_all_messages'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+        $this->router->get('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        
+        $this->router->get("/music_details", ['Controllers\TrackController', 'show_details'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/show_share_modal", ['Controllers\TrackController', 'show_share_modal'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/share_track", ['Controllers\TrackController', 'share_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/add_comment_and_note", ['Controllers\TrackController', 'add_comment_and_note'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/admin', ['Controllers\AdminController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
     
@@ -73,18 +83,21 @@ class App {
         $this->router->post("/show_share_modal", ['Controllers\TrackController', 'show_share_modal'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post("/share_track", ['Controllers\TrackController', 'share_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post("/add_comment_and_note", ['Controllers\TrackController', 'add_comment_and_note'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/add_to_library", ['Controllers\TrackController', 'add_to_library'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/profile', ['Controllers\ProfileController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->get('/profile/edit', ['Controllers\ProfileController', 'edit'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/profile/edit_process', ['Controllers\ProfileController', 'edit_process'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/favorite', ['Controllers\FavorisController', 'favoris'])->middleware(['Source\Session', 'redirectIfNotConnected']);
-        $this->router->post('/addFavorite', ['Controllers\FavorisController', 'addFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/add_favorite', ['Controllers\FavorisController', 'add_favorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/removeFavorite', ['Controllers\FavorisController', 'removeFavorite'])->middleware(['Source\Session', 'redirectIfNotConnected']);
     
         $this->router->get('/rechercher', ['Controllers\SearchController', 'search'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/search-form', ['Controllers\SearchController', 'showSearchForm'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+
     }
 
     public function run()

@@ -126,7 +126,6 @@
         <div class="navbar-content">
             <div class="app-name"><a href="/home" style="text-decoration:none">HarmoniHub</a></div>
             <ul class="nav-links" id="navLinks" style="padding:0">
-                <li><a href="/admin">Administration</a></li>
                 <li><a href="/search-form">Rechercher</a></li>
                 <li><a href="/track">Mes Tracks</a></li>
                 <li><a href="/favorite">Mes Favoris</a></li>

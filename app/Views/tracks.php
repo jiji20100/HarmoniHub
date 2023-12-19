@@ -254,8 +254,15 @@
             deleteButton.dataset.id = music.id;
             deleteButton.textContent = '\uD83D\uDDD1';
 
+            const favoriteButton = document.createElement('a');
+            favoriteButton.href = '#';
+            favoriteButton.classList.add('favorite-button');
+            favoriteButton.dataset.id = music.id;
+            favoriteButton.textContent = '\u2661';
+
             titleHeading.appendChild(editButton);
             titleHeading.appendChild(deleteButton);
+            titleHeading.appendChild(favoriteButton);
 
             const audioElement = document.createElement('audio');
             audioElement.id = music.id;
@@ -277,6 +284,19 @@
 
         function hiddenForm(music, musicDiv) {
             // Formulaires cachés pour la modification et la suppression
+            const favoriteForm = document.createElement('form');
+            favoriteForm.method = 'POST';
+            favoriteForm.action = '/add_favorite';
+            favoriteForm.style.display = 'none';
+            favoriteForm.id = 'favorite-form-' + music.id;
+
+            const favoriteInput = document.createElement('input');
+            favoriteInput.type = 'hidden';
+            favoriteInput.name = 'id';
+            favoriteInput.value = music.id;
+
+            favoriteForm.appendChild(favoriteInput);
+
             const deleteForm = document.createElement('form');
             deleteForm.method = 'POST';
             deleteForm.action = '/delete_track';
@@ -302,6 +322,7 @@
             updateInput.value = music.id;
 
             updateForm.appendChild(updateInput);
+            musicDiv.appendChild(favoriteForm);
             musicDiv.appendChild(deleteForm);
             musicDiv.appendChild(updateForm);
         }
@@ -315,7 +336,16 @@
                     }
                 });
             });
-
+            
+            document.querySelectorAll('.favorite-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const trackId = e.target.getAttribute('data-id');
+                    if (confirm('Êtes-vous sûr de vouloir ajouter ce track à vos favoris ?')) {
+                        document.getElementById('favorite-form-' + trackId).submit();
+                    }
+                });
+            });
+            
             document.querySelectorAll('.edit-button').forEach(button => {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -337,6 +367,8 @@
                 });
             });
         }
+
+        
     </script>
 
     <div class="container">
