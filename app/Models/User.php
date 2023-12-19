@@ -7,10 +7,24 @@ use Source\Database;
 class User extends Database {
     protected static $table = "users";
 
-    public static function getUserById(int $id): array | bool {
+    public static function getAllUsers(): array | bool {
         try {
-            $query = "SELECT * FROM " . self::$table . " WHERE id = $id";
+            $query = "SELECT id, surname, name, artist_name, email, role_id, created_at FROM " . self::$table;
             $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
+    }
+
+    public static function getUserById($id): array | bool {
+        try {
+            $query = "SELECT * FROM " . self::$table . " WHERE id = :id";
+            $stmt = self::$instance->prepare($query);
+            $stmt->bindParam(":id", $id, \PDO::PARAM_INT);
             $stmt->execute();
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -87,31 +101,30 @@ class User extends Database {
         }
     }
 
-    public static function updateUser(int $id, array $data): bool {
+    public static function update_user($surname, $name, $artist_name, $email, $role_id, $created_at, $user_id): bool {
         try {
-            $query = "UPDATE " . self::$table . " SET ";
+            $sql = "UPDATE users SET surname = :surname, name = :name, artist_name = :artist_name, email = :email, role_id = :role_id, created_at = :created_at WHERE id = :id";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":surname", $surname);
+            $stmt->bindParam(":name", $name);
+            $stmt->bindParam(":artist_name", $artist_name);
+            $stmt->bindParam(":email", $email);
+            $stmt->bindParam(":role_id", $role_id);
+            $stmt->bindParam(":created_at", $created_at);
+            $stmt->bindParam(":id", $user_id, \PDO::PARAM_INT);
+            $stmt->execute();
 
-            foreach($data as $key => $value) {
-                $query .= "$key = '$value', ";
-            }
-
-            $query = rtrim($query, ", ");
-            $query .= " WHERE id = $id";
-
-            $stmt = self::$instance->prepare($query);
-            $stmt->execute($values);
-
-            return true;
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            echo "Database Error: " . $e->getMessage();
-            return false;
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
         }
     }
 
-    public function deleteUser(int $id): bool {
+    public static function delete_user($id): bool {
         try {
             $query = "DELETE FROM " . self::$table . " WHERE id = :id";
-            $stmt = $this->instance->prepare($query);
+            $stmt = self::$instance->prepare($query);
             $stmt->execute([':id' => $id]);
 
             return true;

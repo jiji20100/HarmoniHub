@@ -43,6 +43,9 @@ class App {
         $this->router->get('/admin', ['Controllers\AdminController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->get('/admin_users', ['Controllers\AdminController', 'admin_users_index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->get('/admin_tracks', ['Controllers\AdminController', 'admin_tracks_index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/show_update_form_user', ['Controllers\AdminController', 'show_update_form_user'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/update_user', ['Controllers\AdminController', 'update_user'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post('/delete_user', ['Controllers\AdminController', 'delete_user'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/track', ['Controllers\TrackController', 'track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/track', ['Controllers\TrackController', 'upload_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
