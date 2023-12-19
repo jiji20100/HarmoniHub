@@ -95,3 +95,10 @@ CREATE TABLE IF NOT EXISTS messages (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
 );
+
+
+--pour la renitialisation du mot de passe
+ALTER TABLE users
+  ADD `reset_token_hash` VARCHAR(64) NULL DEFAULT NULL,
+  ADD `reset_token_expires_at` DATETIME NULL DEFAULT NULL,
+  ADD UNIQUE (`reset_token_hash`);

@@ -7,3 +7,10 @@ host = "localhost"
 name = "HarmoniHub"
 username = ""            #Remplir par le username de votre base de donnée
 password = ""            #Remplir par le mot de passe de votre base de donnée
+
+[mailercomfig]
+mailer_Host = "smtp.gmail.gom"
+mailer_Port = 587
+mailer_Username = "harmonihub98@gmail.com"
+mailer_Password = "amhu xcsk wxso ikai"
+mailer_Username = "harmonihub98@gmail.com"
