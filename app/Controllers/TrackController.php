@@ -117,6 +117,23 @@ class TrackController {
         }
     }
 
+    public function add_favorite() {
+        if (isset($_POST['music_id'])) {
+            $userId = $_SESSION['user_id'];
+            $trackId = $_POST['music_id'];
+            try {
+                $result = Music::add_favorite($userId, $trackId);
+                $_SESSION['track_message'] = 'Track ajouté aux favoris.';
+                $_SESSION['track_message_type'] = 'success';
+            } catch (PDOException $e) {
+                $_SESSION['track_message'] = 'Erreur de base de données : ' . $e->getMessage();
+                $_SESSION['track_message_type'] = 'danger';
+            }
+        }
+        header('Location: /track');
+        exit;
+    }
+
     public function show_update_form_track() {
         $formHtml = '';
         if (isset($_POST['id'])) {
@@ -160,5 +177,28 @@ class TrackController {
         return $formHtml;
     }
 
+    public function show_details() {
+        $details = [];
+        if (isset($_GET['id'])) {
+            $trackId = $_GET['id'];
+            try {
+                $track = Music::getTrackById($trackId);
+                $genres = Genre::getAllGenres();
+                if ($track) {
+                    $details['track'] = $track;
+                    $details['genres'] = $genres;
+                } else {
+                    $details['error'] = 'Musique non trouvée.';
+                }
+            } catch (Exception $e) {
+                $details['error'] = 'Erreur : ' . $e->getMessage();
+            }
+        } else {
+            $details['error'] = 'Aucun ID de musique spécifié.';
+        }
     
+        //return $details;
+
+        return Renderer::make('Home/music_details', ['detailsData' => $details]);
+    }
 }

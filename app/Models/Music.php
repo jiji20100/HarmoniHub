@@ -65,7 +65,7 @@ class Music extends Database {
             $query = "SELECT * FROM " . self::$table . " WHERE genre = $id";
             $stmt = self::$instance->prepare($query);
             $stmt->execute();
-
+            
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo "Erreur de base de données : " . $e->getMessage();
@@ -75,17 +75,16 @@ class Music extends Database {
 
     public static function getBestTracks(): array {
         try {
-            $query = "SELECT * FROM " . self::$table . " ORDER BY likes DESC LIMIT 10";
+            $query = "SELECT * FROM " . self::$table . " ORDER BY note DESC LIMIT 10";
             $stmt = self::$instance->prepare($query);
             $stmt->execute();
-
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo "Erreur de base de données : " . $e->getMessage();
             return [];
         }
     }
-
+    
 
 
     public static function addTrack($trackName, $artistName, $genreId, $path, $createdAt, $user_id): bool {
@@ -120,6 +119,21 @@ class Music extends Database {
         } catch (\PDOException $e) {
             echo "Erreur de base de données : " . $e->getMessage();
             return false;
+        }
+    }
+
+    public static function add_favorite($userId, $musicId) {
+
+        try {
+            $sql = "INSERT INTO favorites (user_id, music_id) VALUES (:userId, :musicId)";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->bindParam(":musicId", $musicId);
+            $stmt->execute();
+            return true;
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
         }
     }
 
