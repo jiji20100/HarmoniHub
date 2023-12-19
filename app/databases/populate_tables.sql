@@ -16,6 +16,7 @@ VALUES ('Doe', 'John', 'JohnDoe', 'john.doe@example.com', '$2y$12$Kt4LZgiDAZHR7f
        ('Johnson', 'Michael', 'Unknown', 'michael.johnson@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO'),
        ('Samuel', 'Deliens', 'DeliensSamuel', 'Samuel.deliens@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO'),
        ('Jihad', 'Rifi', 'RifiJihad', 'Jihad.rifi@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO');
+       ('Nicolas', 'Natanek', 'NicoEpita', 'nicolas.natanek@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO');
 
 
 -- Insertion des musiques

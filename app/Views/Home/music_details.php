@@ -11,6 +11,38 @@
 
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
     <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+    <style>
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.4); 
+        }
+
+        .modal-content {
+            margin: 15% auto; 
+            width: 30% !important;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            text-align: center;
+        }
+        .close{
+            
+            text-align: right;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -63,9 +95,15 @@
 
             echo '<input type="hidden" name="music_id" value="' . $_GET['id'] . '">';
 
-            echo '<button type="submit" class="btn btn-primary">Ajouter Commentaire et Note</button>';
-
+            echo '<button type="submit" class="btn btn-primary">Ajouter Commentaire et Note</button> ';
             echo '</form>';
+            if (isset($_SESSION['share_message'])) {
+                $message_type = ($_SESSION['share_message_type'] == 'success') ? 'alert-success' : 'alert-danger';
+                echo '<div class="alert ' . $message_type . '">' . $_SESSION['share_message'] . '</div>';
+                unset($_SESSION['share_message']);
+                unset($_SESSION['share_message_type']);
+            }
+            echo '<a href="#" style="color:#fff;text-decoration:none" class="btn btn-primary share-button" data-id=' . $track['id'] . '>Partager cette musique</a>';
             echo '<div class="mt-4">';
             echo '<h3>Commentaires</h3>';
             if (empty($comments)) {
@@ -84,7 +122,39 @@
         }
         ?>
     </div>
-
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="shareFormContainer"></div>
+        </div>
+    </div>
 </body>
+<script>
+    document.querySelectorAll('.share-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const track_id = e.target.getAttribute('data-id');
+            fetch('/show_share_modal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest' 
+                },
+                body: 'id=' + track_id
+            })
+            .then(response => response.text())
+            .then(html => {
+                
+                console.log(track_id);
+                document.getElementById('shareFormContainer').innerHTML = html;
+                document.getElementById('shareModal').style.display = 'block';
+            });
 
+            });
+        });
+
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('shareModal').style.display = 'none';
+        });
+</script>
 </html>

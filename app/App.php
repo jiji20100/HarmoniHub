@@ -63,6 +63,8 @@ class App {
         $this->router->post('/delete_track', ['Controllers\TrackController', 'delete_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         
         $this->router->get("/music_details", ['Controllers\TrackController', 'show_details'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/show_share_modal", ['Controllers\TrackController', 'show_share_modal'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/share_track", ['Controllers\TrackController', 'share_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post("/add_comment_and_note", ['Controllers\TrackController', 'add_comment_and_note'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/profile', ['Controllers\ProfileController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
