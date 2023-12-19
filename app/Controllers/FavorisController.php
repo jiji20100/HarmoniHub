@@ -23,7 +23,7 @@ class FavorisController {
         } else {
             echo 'no_music_id'; // Si aucun ID de musique n'est fourni
         }
-        header('Location: /favoris');
+        header('Location: /favorite');
         exit; // Arrête l'exécution du script
     }
 
