@@ -132,7 +132,7 @@
                 <li><a href="/search-form">Rechercher</a></li>
                 <li><a href="/track">Mes Tracks</a></li>
                 <li><a href="/favorite">Mes Favoris</a></li>
-                <li><a href="/notifs">Notifs</a></li>
+                <li style="width: 30px"><a href="/notifs"><img src="assets/img/ring.png" alt="logo" style="width: 20px; height: 20px;"></a></li>
                 <li><a href="/profile">Mon Profil</a></li>
                 <li><form action="/logout" method="POST" style="margin: 0"><button class="logout-button">Se déconnecter</button></form></li>
             </ul>
