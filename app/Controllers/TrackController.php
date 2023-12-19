@@ -143,6 +143,24 @@ class TrackController {
     }
     
 
+    public function add_to_library() {
+        if (isset($_POST['music_id'])) {
+            $userId = $_SESSION['user_id'];
+            $trackId = $_POST['music_id'];
+            try {
+                $playlist = Playlist::getPlaylistByNames("Library", $_SESSION['user_id']);
+                $result = Playlist::addMusicToPlaylist($playlist[0]['id'], $trackId);
+                $_SESSION['track_message'] = 'Track ajouté à la bibliothèque.';
+                $_SESSION['track_message_type'] = 'success';
+            } catch (PDOException $e) {
+                $_SESSION['track_message'] = 'Erreur de base de données : ' . $e->getMessage();
+                $_SESSION['track_message_type'] = 'danger';
+            }
+        }
+        header('Location: /track');
+        exit;
+    }
+
     public function show_update_form_track() {
         $formHtml = '';
         if (isset($_POST['id'])) {
