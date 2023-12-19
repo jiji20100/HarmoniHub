@@ -204,6 +204,32 @@ class Music extends Database {
             throw $e;
         }
     }
+
+    public static function getAverageNoteById($trackId) {
+        try {
+            $sql = "SELECT AVG(note) as moyenne FROM notes WHERE music_id = :id";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":id", $trackId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
+        }
+    }
+
+    public static function getCommentsById($trackId) {
+        try {
+            $sql = "SELECT u.artist_name as userId, c.music_id, c.comment FROM comments c JOIN users u ON u.id = c.user_id WHERE music_id = :id";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":id", $trackId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
+        }
+    }
 }
 
 ?>

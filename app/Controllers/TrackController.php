@@ -207,10 +207,14 @@ class TrackController {
             $trackId = $_GET['id'];
             try {
                 $track = Music::getTrackById($trackId);
+                $note = Music::getAverageNoteById($trackId);
+                $comments = Music::getCommentsById($trackId);
                 $genres = Genre::getAllGenres();
                 if ($track) {
                     $details['track'] = $track;
                     $details['genres'] = $genres;
+                    $details['avg_note'] = $note;
+                    $details['comment'] = $comments;
                 } else {
                     $details['error'] = 'Musique non trouvée.';
                 }
