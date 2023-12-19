@@ -219,12 +219,13 @@ class AuthController {
                         $stmt->bindParam(3, $email, \PDO::PARAM_STR);
                         
                         $stmt->execute();
-                        echo "the token was set\n";
-                        echo "tokenhash : " .$token_hash;
-                        echo "token : " .$token;
+                        // echo "the token was set\n";
+                        // echo "tokenhash : " .$token_hash;
+                        // echo "token : " .$token;
 
                         if($stmt){
                             $emailConfig = new MailConfig();
+                            $DOMAIN_NAME = $emailConfig->config['domain_name'];
 
                             $emailConfig->mailer->Subject = "@no reply reset you password";
                             $emailConfig->mailer->addAddress($email);
@@ -232,13 +233,14 @@ class AuthController {
                             $emailConfig->mailer->Body = <<<END
                             
                             <h1>Reset your HarmoniHub password <h1/>
-                            Click <a href="http://epita-nicolas.13h37.io/make_reset_password?token=$token">HERE</a> to reset your password.
+                            Click <a href="$DOMAIN_NAME/make_reset_password?token=$token">HERE</a> to reset your password.
 
                             END;
                             try{
                                 $emailConfig->mailer->send();
                             }catch (Exception $e){
                                 echo "le message n'a pas ete envoye error : {$email->ErrorInfo}";
+                                $erreurs[] = "le message n'a pas ete envoye error : {$email->ErrorInfo}";
                             }     
                         }
                         echo "Please check the massage in your email";
