@@ -10,13 +10,13 @@ INSERT IGNORE INTO `genres` (`name`) VALUES ('Electro');
 INSERT IGNORE INTO `genres` (`name`) VALUES ('Metal');
 
 -- Insertion des utilisateurs
-INSERT INTO users (surname, name, artist_name, email, password)
-VALUES ('Doe', 'John', 'JohnDoe', 'john.doe@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO'),
-       ('Smith', 'Jane', 'JaneSmith', 'jane.smith@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO'),
-       ('Johnson', 'Michael', 'Unknown', 'michael.johnson@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO'),
-       ('Samuel', 'Deliens', 'DeliensSamuel', 'Samuel.deliens@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO'),
-       ('Jihad', 'Rifi', 'RifiJihad', 'Jihad.rifi@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO');
-       ('Nicolas', 'Natanek', 'NicoEpita', 'nicolas.natanek@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO');
+INSERT INTO users (surname, name, artist_name, email, password, role_id)
+VALUES ('Doe', 'John', 'JohnDoe', 'john.doe@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO', 2),
+       ('Smith', 'Jane', 'JaneSmith', 'jane.smith@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO', 2),
+       ('Johnson', 'Michael', 'Unknown', 'michael.johnson@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO', 2),
+       ('Samuel', 'Deliens', 'DeliensSamuel', 'Samuel.deliens@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO', 1),
+       ('Jihad', 'Rifi', 'RifiJihad', 'Jihad.rifi@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO', 1),
+       ('Nicolas', 'Natanek', 'NicoEpita', 'nicolas.natanek@gmail.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO', 1);
 
 
 -- Insertion des musiques

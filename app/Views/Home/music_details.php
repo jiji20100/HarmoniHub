@@ -64,7 +64,8 @@
             echo '<h2>' . htmlspecialchars($track['title']) . '</h2>';
             echo '<p class="fs-5 text-muted">Artiste: ' . htmlspecialchars($track['artist']) . '</p>';
             echo '<p class="fs-5 text-muted">Genre: ' . htmlspecialchars($track['genre']) . '</p>';
-            echo '<p class="fs-5 text-muted">Note: ' . htmlspecialchars($note['moyenne']) . '/5</p>';
+            $noteFormatee = floatval($note['moyenne']);
+            echo '<p class="fs-5 text-muted">Note: ' . htmlspecialchars($noteFormatee) . '/5</p>';
             echo '<div class="plyr__container">';
             echo '<audio id="audioPlayer" class="plyr">';
             echo '<source src="' . htmlspecialchars($track['file_path']) . '" type="audio/mpeg">';
