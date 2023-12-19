@@ -84,6 +84,19 @@ class Music extends Database {
             return [];
         }
     }
+
+    public static function getTrackByFilepath(string $filepath): array {
+        try {
+            $query = "SELECT * FROM " . self::$table . " WHERE file_path = $filepath";
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+            
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
+    }
     
 
 

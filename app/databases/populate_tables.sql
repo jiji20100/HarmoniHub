@@ -1,5 +1,14 @@
 USE HarmoniHub;
 
+
+-- Insertion des genres
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Rap');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('R&B');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Techno');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Acoustic');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Electro');
+INSERT IGNORE INTO `genres` (`name`) VALUES ('Metal');
+
 -- Insertion des utilisateurs
 INSERT INTO users (surname, name, artist_name, email, password)
 VALUES ('Doe', 'John', 'JohnDoe', 'john.doe@example.com', '$2y$12$Kt4LZgiDAZHR7fZSLygIqOjkOFgfrkWD0dIeEu/pmlqXWFM0ppvBO'),
@@ -11,16 +20,16 @@ VALUES ('Doe', 'John', 'JohnDoe', 'john.doe@example.com', '$2y$12$Kt4LZgiDAZHR7f
 
 -- Insertion des musiques
 INSERT INTO musics (user_id, title, artist, genre, featuring, file_path, note)
-VALUES  (1, 'My song', 'JohnDoe', 1, NULL, 'musics/JohnDoe/My song.mp3', 5),
-        (1, 'My second song', 'JohnDoe', 1, 'JaneSmith', 'musics/JohnDoe/My second song.mp3', 4),
-        (2, 'My song', 'JaneSmith', 2, NULL, 'musics/JaneSmith/My song.mp3', 3),
-        (2, 'My second song', 'JaneSmith', 3, 'JohnDoe', 'musics/JaneSmith/My second song.mp3', 2),
-        (3, 'My song', 'Unknown', 2, NULL, 'musics/Unknown/My song.mp3', 1),
-        (3, 'My second song', 'Unknown', 5, 'JohnDoe', 'musics/Unknown/My second song.mp3', 0),
-        (4, 'My song', 'DeliensSamuel', 6, NULL, 'musics/DeliensSamuel/My song.mp3', 0),
-        (4, 'My second song', 'DeliensSamuel', 5, 'JohnDoe', 'musics/DeliensSamuel/My second song.mp3', 0),
-        (5, 'My song', 'RifiJihad', 2, NULL, 'musics/RifiJihad/My song.mp3', 0),
-        (5, 'My second song', 'RifiJihad', 6, 'JohnDoe', 'musics/RifiJihad/My second song.mp3', 0);
+VALUES  (1, 'My song', 'JohnDoe', 1, NULL, '../files/1/My song.mp3', 5),
+        (1, 'My second song', 'JohnDoe', 1, 'JaneSmith', '../files/1/My second song.mp3', 4),
+        (2, 'My song', 'JaneSmith', 2, NULL, '../files/2/My song.mp3', 3),
+        (2, 'My second song', 'JaneSmith', 3, '../JohnDoe', 'files/2/My second song.mp3', 2),
+        (3, 'My song', 'Unknown', 2, NULL, '../files/3/My song.mp3', 1),
+        (3, 'My second song', 'Unknown', 5, 'JohnDoe', '../files/3/My second song.mp3', 0),
+        (4, 'My song', 'DeliensSamuel', 6, NULL, '../files/4/My song.mp3', 0),
+        (4, 'My second song', 'DeliensSamuel', 5, 'JohnDoe', '../files/4/My second song.mp3', 0),
+        (5, 'My song', 'RifiJihad', 2, NULL, '../files/5/My song.mp3', 0),
+        (5, 'My second song', 'RifiJihad', 6, 'JohnDoe', '../files/5/My second song.mp3', 0);
 
 
 -- Insertion des notes
@@ -50,9 +59,17 @@ VALUES  (1, 1, 'This is a comment'),
         (5, 10, 'This is another comment');
 
 
--- insertion des musiques dans les playlists
+-- insertion des playlists
+INSERT INTO playlists (user_id, name)
+VALUES  (1, 'Library'),
+        (2, 'Library'),
+        (3, 'Library'),
+        (4, 'Library'),
+        (5, 'Library');
+
+-- insertion des liens musiques - playlists
 -- every user has 1 playlist with all his musics
-INSERT INTO playlists (user_id, music_id)
+INSERT INTO links_playlist_music (playlist_id, music_id)
 VALUES  (1, 1),
         (1, 2),
         (2, 3),

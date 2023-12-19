@@ -3,6 +3,7 @@ namespace Controllers;
 
 use Source\Renderer;
 use Models\User;
+use Models\Playlist;
 
 class AuthController {
     public function index(): Renderer {
@@ -114,15 +115,14 @@ class AuthController {
                         'password' => password_hash($password, PASSWORD_DEFAULT)
                     ]);
 
-                    //crée dossier de l'utilisateur (avec son id)
-                    $path = '../public/files/' . $user['id'] . '/';
-                    if (!file_exists($path)) {
-                        mkdir($path, 0777, true);
-                    }
-
                     if (!$user) {
                         $erreurs[] = "Erreur lors de l'inscription.";
                     } else {
+
+                        $user = User::getUserByEmail($email);
+
+                        $this->create_user_env($user);
+
                         $_SESSION['success'] = "Bravo, vous êtes maintenant inscris !";
                         $_SESSION['user_id'] = $user['id'];
                         unset($_SESSION['errors']);
@@ -138,6 +138,18 @@ class AuthController {
                 exit();
             }            
         }
+    }
+
+    private function create_user_env($user) {
+        //crée dossier de l'utilisateur (avec son id)
+        $path = '../public/files/' . $user['id'] . '/';
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        //crée playlist par défaut
+        $playlist = Playlist::createPlaylist("Upload", $user['id']);
+        $playlist = Playlist::createPlaylist("Library", $user['id']);
     }
 
     public function logout()

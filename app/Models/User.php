@@ -101,6 +101,28 @@ class User extends Database {
         }
     }
 
+    public static function updateUser(int $user_id, array $data): bool {
+        try {
+            $query = "UPDATE " . self::$table . " SET ";
+        
+            foreach ($data as $key => $value) {
+                $query .= "$key = :$key, ";
+            }
+        
+            $query = rtrim($query, ", ");
+            $query .= " WHERE id = $user_id;";
+                
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute($data);
+        
+            return true;
+        } catch (\PDOException $e) {
+            echo "Database Error: " . $e->getMessage();
+            return false;
+        }
+    }    
+    
+
     public static function update_user($surname, $name, $artist_name, $email, $role_id, $created_at, $user_id): bool {
         try {
             $sql = "UPDATE users SET surname = :surname, name = :name, artist_name = :artist_name, email = :email, role_id = :role_id, created_at = :created_at WHERE id = :id";

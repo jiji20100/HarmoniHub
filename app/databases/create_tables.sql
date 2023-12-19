@@ -45,10 +45,15 @@ CREATE TABLE IF NOT EXISTS musics (
 -- Création de la table des playlists
 CREATE TABLE IF NOT EXISTS playlists (
     id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id INT(11) UNSIGNED NOT NULL,
-    music_id INT(11) UNSIGNED NOT NULL,
     name VARCHAR(50) NOT NULL DEFAULT 'My playlist',
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    user_id INT(11) UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS links_playlist_music (
+    playlist_id INT(11) UNSIGNED,
+    music_id INT(11) UNSIGNED,
+    FOREIGN KEY (playlist_id) REFERENCES playlists(id) ON DELETE CASCADE,
     FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
 );
 
@@ -90,12 +95,3 @@ CREATE TABLE IF NOT EXISTS messages (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (music_id) REFERENCES musics(id) ON DELETE CASCADE
 );
-
-
--- Insertion des genres
-INSERT IGNORE INTO `genres` (`name`) VALUES ('Rap');
-INSERT IGNORE INTO `genres` (`name`) VALUES ('R&B');
-INSERT IGNORE INTO `genres` (`name`) VALUES ('Techno');
-INSERT IGNORE INTO `genres` (`name`) VALUES ('Acoustic');
-INSERT IGNORE INTO `genres` (`name`) VALUES ('Electro');
-INSERT IGNORE INTO `genres` (`name`) VALUES ('Metal');
