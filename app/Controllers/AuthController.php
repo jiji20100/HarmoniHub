@@ -232,7 +232,7 @@ class AuthController {
                             $emailConfig->mailer->Body = <<<END
                             
                             <h1>Reset your HarmoniHub password <h1/>
-                            Click <a href="http://epita-hilbertchryshostome.13h37.io/make_reset_password?token=$token">HERE</a> to reset your password.
+                            Click <a href="http://epita-nicolas.13h37.io/make_reset_password?token=$token">HERE</a> to reset your password.
 
                             END;
                             try{
