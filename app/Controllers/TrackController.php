@@ -45,7 +45,7 @@ class TrackController {
                     $target_file = $target_dir . $new_filename;
                     $_SESSION['target_file'] = $target_file;
                     if (move_uploaded_file($_FILES["mp3_file"]["tmp_name"][$i], $target_file)) {
-                        $path_in_bdd = "/files/" . $new_filename;
+                        $path_in_bdd = "/files/" . $_SESSION['user_id'] . "/" . $new_filename;
                         $this->save_track_info($trackName, $genreId, $featuring, $sanitized_filename, $path_in_bdd);
                     } else {
                         $_SESSION['upload_message'] = 'Une erreur s\'est produite lors du téléchargement du fichier.';
