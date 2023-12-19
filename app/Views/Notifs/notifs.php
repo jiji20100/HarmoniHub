@@ -15,6 +15,12 @@
         padding: 2rem;
         border-radius: 1rem;
     }
+    .no_notif {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        margin: 30px 50px;
+        padding: 2rem;
+        border-radius: 1rem;
+    }
 </style>
 
 
@@ -40,7 +46,8 @@ if (!empty($messages)) {
         <?php
     }
 } else {
-    echo "<p>No notifications available.</p>";
+    echo '<div class="no_notif">';
+    echo '<p><strong>No notifications available</strong></p>';
 }
 ?>
 
