@@ -204,6 +204,49 @@ class Music extends Database {
             throw $e;
         }
     }
+
+    public static function getAverageNoteById($trackId) {
+        try {
+            $sql = "SELECT AVG(note) as moyenne FROM notes WHERE music_id = :id";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":id", $trackId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
+        }
+    }
+
+    public static function getCommentsById($trackId) {
+        try {
+            $sql = "SELECT u.artist_name as userId, c.music_id, c.comment FROM comments c JOIN users u ON u.id = c.user_id WHERE music_id = :id";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":id", $trackId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
+        }
+    }
+
+    public static function share_track($from_userId, $to_userId, $trackId) {
+        try {
+            $user_artist_name = User::getUserById($from_userId);
+            $message = $user_artist_name["artist_name"] . " a partagé cette musique avec toi !";
+            $sql = "INSERT INTO messages (user_id, music_id, message) VALUES (:user_id, :music_id, :message)";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":user_id", $to_userId, \PDO::PARAM_INT);
+            $stmt->bindParam(":music_id", $trackId, \PDO::PARAM_INT);
+            $stmt->bindParam(":message", $message);
+            $stmt->execute();
+            return true;
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
+        }
+    }
 }
 
 ?>

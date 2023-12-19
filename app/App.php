@@ -36,6 +36,10 @@ class App {
         $this->router->post('/register', ['Controllers\AuthController', 'register_process'])->middleware(['Source\Session', 'redirectIfConnected']);
 
         $this->router->get('/reset_password', ['Controllers\AuthController', 'reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/reset_password', ['Controllers\AuthController', 'send_reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->get('/make_reset_password', ['Controllers\AuthController', 'make_reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
+        $this->router->post('/make_reset_password', ['Controllers\AuthController', 'make_reset_password_process'])->middleware(['Source\Session', 'redirectIfConnected']);
+
         $this->router->post('/logout', ['Controllers\AuthController', 'logout'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
 
@@ -66,6 +70,8 @@ class App {
         $this->router->get('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         
         $this->router->get("/music_details", ['Controllers\TrackController', 'show_details'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/show_share_modal", ['Controllers\TrackController', 'show_share_modal'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/share_track", ['Controllers\TrackController', 'share_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post("/add_comment_and_note", ['Controllers\TrackController', 'add_comment_and_note'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/profile', ['Controllers\ProfileController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);

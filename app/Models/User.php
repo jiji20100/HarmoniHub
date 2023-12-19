@@ -27,7 +27,7 @@ class User extends Database {
             $stmt->bindParam(":id", $id, \PDO::PARAM_INT);
             $stmt->execute();
 
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo "Erreur de base de données : " . $e->getMessage();
             return [];

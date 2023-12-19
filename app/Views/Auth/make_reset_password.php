@@ -1,3 +1,40 @@
+<?php
+    namespace Controllers;
+
+    use Source\Database;
+    use Source\Renderer;
+    use \PDO;
+    
+    $token = $_GET["token"];
+    echo $token;
+    $token_hash = hash("sha256", $token);
+    echo $token_hash;
+    
+    $connexion = Database::getConnection();
+    
+    $sql = "SELECT * FROM users
+            WHERE reset_token_hash = ?";
+    
+    $stmt = $connexion->prepare($sql);
+    
+    // Bind the parameter using bindParam
+    $stmt->bindParam(1, $token_hash, \PDO::PARAM_STR);
+    
+    $stmt->execute();
+    
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($result === false) {
+        die("Token not found");
+    }
+    
+    if (strtotime($result["reset_token_expires_at"]) <= time()) {
+        die("Token has expired");
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -86,22 +123,26 @@
                     <div class="background"></div>
                     <div class="card-body p-5  text-center">
                         <div>
-                            <h2 class="fw-bold mb-3 text-uppercase">Réinitialisation du Mot de Passe</h2>
+                            <h2 class="fw-bold mb-3 text-uppercase">Reset your password</h2>
 
                             <!-- Formulaire de connexion avec fond blanc -->
-                            <form action="/reset_password" method="post" style="padding:10px">
+                            <form action="/make_reset_password" method="post" style="padding:10px">
                                 <div class="form-outline form-light mb-4">
-                                    <label for="email_fo_reset" class="form-label">Email</label>
-                                    <input type="email" name="email_fo_reset" id="email_fo_reset" class="form-control form-control-lg" placeholder="Email..." required>
+                                    <label for="password" class="form-label">Mot de passe</label>
+                                    <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
+                                    <input type="password" name="password" id="password" class="form-control form-control-lg" required>
                                 </div>
-                                <button class="btn btn-outline-light btn-lg px-5" type="submit">Recover Password</button>
+
+                                <div class="form-outline form-light mb-4">
+                                    <label for="password_confirmation" class="form-label">Confirmer le Mot de passe</label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control form-control-lg" required>
+                                </div>
+
+                                <button class="btn btn-outline-light btn-lg px-5" type="submit">Reset Password</button>
                             </form>
 
                         </div>
 
-                        <div>
-                            <p class="mb-0">Don't have an account? <a href="/register" class="text-light fw-bold">Sign Up</a></p>
-                        </div>
                     </div>
                 </div>
             </div>

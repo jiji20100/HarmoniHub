@@ -207,10 +207,14 @@ class TrackController {
             $trackId = $_GET['id'];
             try {
                 $track = Music::getTrackById($trackId);
+                $note = Music::getAverageNoteById($trackId);
+                $comments = Music::getCommentsById($trackId);
                 $genres = Genre::getAllGenres();
                 if ($track) {
                     $details['track'] = $track;
                     $details['genres'] = $genres;
+                    $details['avg_note'] = $note;
+                    $details['comment'] = $comments;
                 } else {
                     $details['error'] = 'Musique non trouvée.';
                 }
@@ -247,6 +251,54 @@ class TrackController {
     
         //return $details;
 
+        header('Location: /music_details?id=' . $trackId);
+        exit;
+    }
+
+    public function show_share_modal() {
+        $formHtml = '';
+        if (isset($_POST['id'])) {
+            $track_id = $_POST['id'];
+            try {
+                $users = User::getAllUsers();
+                if ($users) {
+                    $formHtml =  '<form action="/share_track" method="POST" enctype="multipart/form-data" class="update-form">';
+                    $formHtml .= '<input type="hidden" name="track_id" value="' . htmlspecialchars($track_id) . '">';
+
+                    $formHtml .= '<label for="users">A qui souhaitez vous partager cette musique ?</label>';
+                    $formHtml .= '<select name="users" id="users">';
+                    foreach ($users as $user) {
+                        $formHtml .= '<option value="' . htmlspecialchars($user['id']) . '">' . htmlspecialchars($user['surname']) . ' ' . htmlspecialchars($user['name']) . " aKa " . htmlspecialchars($user['artist_name']) . '</option>';
+                    }
+                    $formHtml .= '</select>';
+                    $formHtml .= '<button type="submit" class="btn btn-primary">Partager</button>';
+                    $formHtml .= '</form>';
+                } else {
+                    $formHtml .= 'User non trouvé.';
+                }
+            } catch (Exception $e) {
+                $formHtml .= 'Erreur : ' . $e->getMessage();
+            }
+        } else {
+            $formHtml .= 'Aucun ID de user spécifié.';
+        }
+        return $formHtml;
+    }
+
+    public function share_track() {
+        if (isset($_POST['track_id'])) {
+            $from_userId = $_SESSION['user_id'];
+            $to_userId = $_POST['users'];
+            $trackId = $_POST['track_id'];
+            try {
+                $result = Music::share_track($from_userId, $to_userId, $trackId);
+                $_SESSION['share_message'] = 'Track partagé avec succès !';
+                $_SESSION['share_message_type'] = 'success';
+            } catch (PDOException $e) {
+                $_SESSION['share_message'] = 'Erreur de base de données : ' . $e->getMessage();
+                $_SESSION['share_message_type'] = 'danger';
+            }
+        }
         header('Location: /music_details?id=' . $trackId);
         exit;
     }

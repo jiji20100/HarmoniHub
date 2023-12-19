@@ -1,9 +1,17 @@
 #Retirer tous les commentaires après avoir remplis le fichier !
 [application]
 name = "Harmony Hub"
+domain_name =  #entrer le nom de domain_name example "https://epita-hilbertchryshostome.13h37.io"
 
 [database]
 host = "localhost"
 name = "HarmoniHub"
 username = ""            #Remplir par le username de votre base de donnée
 password = ""            #Remplir par le mot de passe de votre base de donnée
+
+[mailercomfig]
+mailer_Host = "smtp.gmail.com"
+mailer_Port = 587
+mailer_Username = "harmonihub98@gmail.com"
+mailer_Password = "amhu xcsk wxso ikai"
+mailer_Username = "harmonihub98@gmail.com"
