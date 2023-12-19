@@ -17,12 +17,12 @@
     <!-- Affichage des 10 dernières pistes -->
     <div class="section">
         <h2 class="mb-4">Les 10 Dernières Pistes</h2>
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
             <?php
             try {
                 $lastTracks = \Models\Music::getLastTracks();
                 foreach ($lastTracks as $track) {
-                    echo '<div class="col-md-6 col-lg-4 mb-4">';
+                    echo '<div class="col mb-4">';
                     echo '<div class="card">';
                     echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
                     echo '<div class="card-body">';
@@ -42,12 +42,12 @@
     <!-- Affichage des 10 meilleures pistes notées -->
     <div class="section">
         <h2 class="mb-4">Les 10 Meilleures Pistes Notées</h2>
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
             <?php
             try {
                 $bestTracks = \Models\Music::getBestTracks();
                 foreach ($bestTracks as $track) {
-                    echo '<div class="col-md-6 col-lg-4 mb-4">';
+                    echo '<div class="col mb-4">';
                     echo '<div class="card">';
                     echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
                     echo '<div class="card-body">';
@@ -81,9 +81,9 @@
                 if (!empty($genreTracks)) {
                     echo '<div class="genre-tracks mb-4">';
                     echo '<h3>' . htmlspecialchars($genre['name']) . '</h3>';
-                    echo '<div class="row">';
+                    echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">';
                     foreach ($genreTracks as $track) {
-                        echo '<div class="col-md-6 col-lg-4 mb-4">';
+                        echo '<div class="col mb-4">';
                         echo '<div class="card">';
                         echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
                         echo '<div class="card-body">';
@@ -103,8 +103,6 @@
         ?>
     </div>
 </div>
-
-
 
 </body>
 </html>
