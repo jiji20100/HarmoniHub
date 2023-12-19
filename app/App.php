@@ -17,7 +17,6 @@ class App {
 
     public function __construct(Router $router, string $request_uri, string $request_method)
     {
-        session_start();
         $this->router = $router;
         $this->request_uri = $request_uri;
         $this->request_method = $request_method; 
@@ -60,6 +59,7 @@ class App {
         $this->router->post('/delete_track', ['Controllers\TrackController', 'delete_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         
         $this->router->get("/music_details", ['Controllers\TrackController', 'show_details'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->post("/add_comment_and_note", ['Controllers\TrackController', 'add_comment_and_note'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
         $this->router->get('/profile', ['Controllers\ProfileController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->get('/profile/edit', ['Controllers\ProfileController', 'edit'])->middleware(['Source\Session', 'redirectIfNotConnected']);
