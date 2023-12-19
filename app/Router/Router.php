@@ -34,7 +34,6 @@ class Router {
         $this->routes[
             $this->currentRoute['requestType'] . ' ' . $this->currentRoute['path']
         ] = $this->currentRoute;
-        $this->currentRoute = [];
 
         return $this;
     }
@@ -44,12 +43,13 @@ class Router {
         $fullPath = $requestType . ' ' . $path;
         $route = $this->routes[$fullPath] ?? null;
 
+
         if ($route['middlewares']) {
             foreach ($route['middlewares'] as $middleware) {
                 [$className, $method] = $middleware;
                 if (class_exists($className) && method_exists($className, $method)) {
                     $class = new $className();
-                    call_user_func_array([$class, $method], []);
+                    echo call_user_func_array([$class, $method], []);
                 }
             }
         }

@@ -38,10 +38,10 @@ class App {
         $this->router->get('/reset_password', ['Controllers\AuthController', 'reset_password'])->middleware(['Source\Session', 'redirectIfConnected']);
         $this->router->post('/logout', ['Controllers\AuthController', 'logout'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
-        $this->router->get('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
 
         $this->router->get('/admin', ['Controllers\AdminController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
-        
+    
         $this->router->get('/admin_tracks', ['Controllers\AdminController', 'admin_tracks_index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/show_update_form_track_admin', ['Controllers\AdminController', 'show_update_form_track_admin'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/update_track_admin', ['Controllers\AdminController', 'update_track_admin'])->middleware(['Source\Session', 'redirectIfNotConnected']);
@@ -52,11 +52,18 @@ class App {
         $this->router->post('/update_user', ['Controllers\AdminController', 'update_user'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/delete_user', ['Controllers\AdminController', 'delete_user'])->middleware(['Source\Session', 'redirectIfNotConnected']);
 
+
         $this->router->get('/track', ['Controllers\TrackController', 'track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/track', ['Controllers\TrackController', 'upload_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/show_update_form_track', ['Controllers\TrackController', 'show_update_form_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/update_track', ['Controllers\TrackController', 'update'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post('/delete_track', ['Controllers\TrackController', 'delete_track'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        
+
+        $this->router->get('/notifs/check_new_messages', ['Controllers\NotifController', 'check_new_messages'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+        $this->router->get('/notifs/get_all_messages', ['Controllers\NotifController', 'get_all_messages'])->middleware(['Source\Session', 'redirectIfNotConnected']);
+
+        $this->router->get('/home', ['Controllers\HomeController', 'index'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         
         $this->router->get("/music_details", ['Controllers\TrackController', 'show_details'])->middleware(['Source\Session', 'redirectIfNotConnected']);
         $this->router->post("/add_comment_and_note", ['Controllers\TrackController', 'add_comment_and_note'])->middleware(['Source\Session', 'redirectIfNotConnected']);
