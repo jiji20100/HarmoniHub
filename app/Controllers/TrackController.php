@@ -6,18 +6,35 @@ use PDOException;
 use Source\Renderer;
 use Source\Database;
 use Models\Music;
+use Models\Playlist;
 use Models\User;
 use Models\Genre;
 
 class TrackController {
     
     public function track(): Renderer {
-        $musics = Music::getTracksByUserId($_SESSION['user_id']);
+
+        $musics = ["playlists" => []];
+
+        // Récupérer les pistes de l'utilisateur
+        $musics['playlists']["upload"] = Music::getTracksByUserId($_SESSION['user_id']);
+
+        // Récupérer les playlists de l'utilisateur
+        $playlists = Playlist::getPlaylistByUserId($_SESSION['user_id']);
+        foreach ($playlists as $playlist) {
+            $music = Playlist::getMusicByPlaylistId($playlist['id']);
+
+            foreach ($music as $track) {
+                $musics['playlists'][$playlist['name']][] = Music::getTrackById($track['music_id']);
+            }
+        }
+
         $genres = Genre::getAllGenres();
         return Renderer::make('tracks', ['musics' => $musics, 'genres' => $genres]);
     }
     
     public function upload_track() {
+        
         if (isset($_FILES['mp3_file'])) {
             // Récupérer le nombre de fichiers téléchargés
             $fileCount = count($_FILES['mp3_file']['name']);
@@ -47,6 +64,7 @@ class TrackController {
                     if (move_uploaded_file($_FILES["mp3_file"]["tmp_name"][$i], $target_file)) {
                         $path_in_bdd = "/files/" . $_SESSION['user_id'] . "/" . $new_filename;
                         $this->save_track_info($trackName, $genreId, $featuring, $sanitized_filename, $path_in_bdd);
+                        $this->add_new_track_libray($path_in_bdd);
                     } else {
                         $_SESSION['upload_message'] = 'Une erreur s\'est produite lors du téléchargement du fichier.';
                         $_SESSION['upload_message_type'] = 'danger';
@@ -74,6 +92,12 @@ class TrackController {
             $_SESSION['upload_message'] = 'Erreur de base de données : ' . $e->getMessage();
             $_SESSION['upload_message_type'] = 'danger';
         }
+    }
+
+    private function add_new_track_libray($filepath) {
+        $music = Music::getTrackByFilepath($filepath);
+        $playlist = Playlist::getPlaylistByNames("Library", $_SESSION['user_id']);
+        $result = Playlist::addMusicToPlaylist($playlist[0]['id'], $music['id']);
     }
 
     public function update() {

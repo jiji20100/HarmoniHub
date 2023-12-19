@@ -22,6 +22,19 @@ class Playlist extends Database {
         }
     }
 
+    public static function getPlaylistByNames(string $name, int $id): array {
+        try {
+            $query = "SELECT * FROM " . self::$table . " WHERE name = '$name' AND user_id = $id";
+            $stmt = self::$instance->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            return [];
+        }
+    }
+
     public static function getMusicByPlaylistId(int $id): array {
         try {
             $query = "SELECT * FROM " . self::$tableLink . " WHERE playlist_id = $id";

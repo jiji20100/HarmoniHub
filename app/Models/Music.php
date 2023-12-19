@@ -87,7 +87,7 @@ class Music extends Database {
 
     public static function getTrackByFilepath(string $filepath): array {
         try {
-            $query = "SELECT * FROM " . self::$table . " WHERE file_path = $filepath";
+            $query = "SELECT * FROM " . self::$table . " WHERE file_path = '$filepath'";
             $stmt = self::$instance->prepare($query);
             $stmt->execute();
             
