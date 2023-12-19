@@ -150,6 +150,30 @@ class Music extends Database {
         }
     }
 
+    public static function add_comment_and_note($userId, $musicId, $comment, $note) {
+
+        try {
+            $sql = "INSERT INTO comments (user_id, music_id, comment) VALUES (:userId, :musicId, :comment)";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->bindParam(":musicId", $musicId);
+            $stmt->bindParam(":comment", $comment);
+            $stmt->execute();
+            $sql_notes = "INSERT INTO notes (user_id, music_id, note) VALUES (:userId, :musicId, :note)";
+            $stmt = self::$instance->prepare($sql_notes);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->bindParam(":musicId", $musicId);
+            $stmt->bindParam(":note", $note);
+            $stmt->execute();
+            return true;
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            var_dump($e->getMessage());
+            exit();
+            throw $e;
+        }
+    }
+
     public static function getTrackById($trackId) {
         try {
             $sql = "SELECT * FROM musics WHERE id = :id";

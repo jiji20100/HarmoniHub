@@ -22,7 +22,6 @@
         } else {
             $track = $detailsData['track'];
             $genres = $detailsData['genres'];
-
             echo '<div class="row">';
             echo '<div class="col-md-6">';
             echo '<img src="https://www.myselfmonart.com/cdn/shop/files/tableau-dique-vinyle.png?v=1686643694&width=749" class="card-img-top" alt="Image">';
@@ -50,8 +49,14 @@
 
             echo '<div class="mt-4">';
             echo '<h3>Actions</h3>';
+            if (isset($_SESSION['comment_and_note_message'])) {
+                $message_type = ($_SESSION['comment_and_note_message_type'] == 'success') ? 'alert-success' : 'alert-danger';
+                echo '<div class="alert ' . $message_type . '">' . $_SESSION['comment_and_note_message'] . '</div>';
+                unset($_SESSION['comment_and_note_message']);
+                unset($_SESSION['comment_and_note_message_type']);
+            }
             // Formulaire pour ajouter un commentaire et donner une note
-            echo '<form method="post" action="add_comment_and_note.php">';
+            echo '<form method="post" action="/add_comment_and_note">';
 
             // Zone de commentaire
             echo '<div class="mb-3">';

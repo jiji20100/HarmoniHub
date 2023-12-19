@@ -201,4 +201,29 @@ class TrackController {
 
         return Renderer::make('Home/music_details', ['detailsData' => $details]);
     }
+
+    public function add_comment_and_note() {
+        $details = [];
+        if (isset($_POST['music_id'])) {
+            $userId = $_SESSION['user_id'];
+            $trackId = $_POST['music_id'];
+            $comment = $_POST['comment'];
+            $note = $_POST['note'];
+            try {
+                $result = Music::add_comment_and_note($userId, $trackId, $comment, $note);
+                $_SESSION['comment_and_note_message'] = 'Note et commentaire bien ajouté !';
+                $_SESSION['comment_and_note_message_type'] = 'success';
+            } catch (PDOException $e) {
+                $_SESSION['comment_and_note_message'] = 'Erreur de base de données : ' . $e->getMessage();
+                $_SESSION['comment_and_note_message_type'] = 'danger';
+            }
+        } else {
+            $details['error'] = 'Aucun ID de musique spécifié.';
+        }
+    
+        //return $details;
+
+        header('Location: /music_details?id=' . $trackId);
+        exit;
+    }
 }
