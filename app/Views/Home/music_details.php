@@ -74,6 +74,14 @@
             echo '<script>const player = new Plyr("#audioPlayer");</script>';
             echo '<div class="mt-4">';
             echo '<h3>Actions</h3>';
+
+            //button to add to playlist lib
+            echo '<form method="post" action="/add_to_library">';
+            echo '<input type="hidden" name="music_id" value="' . $_GET['id'] . '">';
+            echo '<button type="submit" class="btn btn-primary">Ajouter à la bibliothèque</button> ';
+            echo '</form>';
+
+
             if (isset($_SESSION['comment_and_note_message'])) {
                 $message_type = ($_SESSION['comment_and_note_message_type'] == 'success') ? 'alert-success' : 'alert-danger';
                 echo '<div class="alert ' . $message_type . '">' . $_SESSION['comment_and_note_message'] . '</div>';
