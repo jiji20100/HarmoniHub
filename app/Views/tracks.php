@@ -140,19 +140,19 @@
             background-color: #0056b3;
         }
         .modal {
-            display: none; /* Caché par défaut */
-            position: fixed; /* Reste en place même lors du défilement de la page */
-            z-index: 1000; /* S'affiche au-dessus des autres éléments */
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
             left: 0;
             top: 0;
-            width: 100%; /* Largeur complète */
-            height: 100%; /* Hauteur complète */
-            overflow: auto; /* Permet le défilement si nécessaire */
-            background-color: rgba(0, 0, 0, 0.4); /* Couleur de fond semi-transparente */
+            width: 100%;
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.4); 
         }
 
         .modal-content {
-            margin: 15% auto; /* 15% du haut de l'écran */
+            margin: 15% auto; 
             width: 30%;
         }
         .close {
@@ -205,7 +205,6 @@
                     echo '</audio>';
                     echo '</div>'; 
                     echo '</div>';
-                    // Formulaires cachés pour la modification et la suppression
                     echo '<form method="POST" action="/delete_track" style="display: none;" id="delete-form-' . $row['id'] . '">';
                     echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
                     echo '</form>';
@@ -296,7 +295,6 @@
     dropArea.addEventListener('dragleave', () => {
         dropArea.classList.remove('active');
     });
-    // Affichez les noms de tous les fichiers
 
     dropArea.addEventListener('drop', (e) => {
         e.preventDefault();
@@ -331,7 +329,7 @@
         audios.forEach(audio => {
             if(audio.id !== exceptId) {
                 audio.pause();
-                audio.currentTime = 0; // Remettre à zéro si vous le souhaitez
+                audio.currentTime = 0; 
             }
         });
     }

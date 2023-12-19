@@ -63,3 +63,8 @@ VALUES  (1, 1),
         (4, 8),
         (5, 9),
         (5, 10);
+
+-- Insertion des rôles
+
+INSERT IGNORE INTO `roles` (`name`) VALUES ('admin');
+INSERT IGNORE INTO `roles` (`name`) VALUES ('user');
