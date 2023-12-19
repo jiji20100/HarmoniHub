@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-    
 <head>
     <meta charset="UTF-8">
     <style>
@@ -512,5 +509,3 @@
     }
 </script>
 
-</body>
-</html>
