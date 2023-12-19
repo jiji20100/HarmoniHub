@@ -87,7 +87,7 @@ class Music extends Database {
 
     public static function getTrackByFilepath(string $filepath): array {
         try {
-            $query = "SELECT * FROM " . self::$table . " WHERE file_path = $filepath";
+            $query = "SELECT * FROM " . self::$table . " WHERE file_path = '$filepath'";
             $stmt = self::$instance->prepare($query);
             $stmt->execute();
             
@@ -150,6 +150,30 @@ class Music extends Database {
         }
     }
 
+    public static function add_comment_and_note($userId, $musicId, $comment, $note) {
+
+        try {
+            $sql = "INSERT INTO comments (user_id, music_id, comment) VALUES (:userId, :musicId, :comment)";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->bindParam(":musicId", $musicId);
+            $stmt->bindParam(":comment", $comment);
+            $stmt->execute();
+            $sql_notes = "INSERT INTO notes (user_id, music_id, note) VALUES (:userId, :musicId, :note)";
+            $stmt = self::$instance->prepare($sql_notes);
+            $stmt->bindParam(":userId", $userId);
+            $stmt->bindParam(":musicId", $musicId);
+            $stmt->bindParam(":note", $note);
+            $stmt->execute();
+            return true;
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            var_dump($e->getMessage());
+            exit();
+            throw $e;
+        }
+    }
+
     public static function getTrackById($trackId) {
         try {
             $sql = "SELECT * FROM musics WHERE id = :id";
@@ -175,6 +199,32 @@ class Music extends Database {
             $stmt->bindParam(":id", $trackId, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
+        }
+    }
+
+    public static function getAverageNoteById($trackId) {
+        try {
+            $sql = "SELECT AVG(note) as moyenne FROM notes WHERE music_id = :id";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":id", $trackId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            echo "Erreur de base de données : " . $e->getMessage();
+            throw $e;
+        }
+    }
+
+    public static function getCommentsById($trackId) {
+        try {
+            $sql = "SELECT u.artist_name as userId, c.music_id, c.comment FROM comments c JOIN users u ON u.id = c.user_id WHERE music_id = :id";
+            $stmt = self::$instance->prepare($sql);
+            $stmt->bindParam(":id", $trackId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo "Erreur de base de données : " . $e->getMessage();
             throw $e;
